@@ -21,10 +21,7 @@ namespace TeleBanel
         public TelegramBotClient Bot { get; set; }
         public User Me { get; set; }
         public CultureInfo CurrentCulture { get; set; }
-        public IReplyMarkup VoteInlineKeyboard { get; set; }
-        public IReplyMarkup PassKeyboardInlineKeyboard { get; set; }
-        public IReplyMarkup CommonReplyKeyboard { get; set; }
-        public IReplyMarkup RegisterReplyKeyboard { get; set; }
+
 
         #endregion
 
@@ -34,7 +31,6 @@ namespace TeleBanel
         {
             CurrentCulture = new CultureInfo("fa");
             Accounts = new Dictionary<int, UserWrapper>();
-            InitKeyboards();
         }
         public BotManager(string apiKey, string botPassword) : this()
         {
@@ -105,7 +101,7 @@ namespace TeleBanel
                 await Bot.SendTextMessageAsync(
                     e.CallbackQuery.Message.Chat.Id,
                     Localization.PleaseChooseYourOptionDoubleDot,
-                    replyMarkup: CommonReplyKeyboard);
+                    replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[e.CallbackQuery.From.Id].LanguageCulture]);
             }
             else
             {
@@ -137,7 +133,7 @@ namespace TeleBanel
                         await Bot.SendTextMessageAsync(
                             e.Message.Chat.Id,
                             Localization.PleaseChooseYourOptionDoubleDot,
-                            replyMarkup: CommonReplyKeyboard);
+                            replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[e.Message.From.Id].LanguageCulture]);
                         break;
                 }
             }
@@ -149,17 +145,16 @@ namespace TeleBanel
                         await Bot.SendTextMessageAsync(
                             e.Message.Chat.Id,
                             Localization.PleaseChooseYourOptionDoubleDot,
-                            replyMarkup: RegisterReplyKeyboard);
+                            replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[e.Message.From.Id].LanguageCulture]);
                         break;
                     case "register":
                         Accounts[e.Message.From.Id].Password = "";
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             Localization.Password + ": ",
-                            replyMarkup: PassKeyboardInlineKeyboard);
+                            replyMarkup: BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[e.Message.From.Id].LanguageCulture]);
                         break;
                     case "change language":
                         Accounts[e.Message.From.Id].LanguageCulture = CurrentCulture.TwoLetterISOLanguageName;
-                        InitKeyboards();
                         break;
                     case "get my id":
                         await Bot.SendTextMessageAsync(e.Message.From.Id,
@@ -168,19 +163,6 @@ namespace TeleBanel
                     default:
                         return;
                 }
-            }
-        }
-
-
-        public async Task GetPasswordKeys(int userId)
-        {
-            if (!Accounts[userId].IsAuthenticated)
-            {
-                Accounts[userId].Password = "";
-                await Bot.SendTextMessageAsync(userId,
-                    Localization.Password + ": ",
-                    ParseMode.Default,
-                    replyMarkup: PassKeyboardInlineKeyboard);
             }
         }
 
@@ -242,22 +224,11 @@ namespace TeleBanel
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
                 Localization.Password + ":" + new string(Accounts[e.CallbackQuery.From.Id].Password.Select(x => Emoji.EightPointedStar[0]).ToArray()),
-                ParseMode.Default, false, PassKeyboardInlineKeyboard);
+                ParseMode.Default, false, BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[e.CallbackQuery.From.Id].LanguageCulture]);
 
             return true;
         }
 
-
-        
-
-        public void InitKeyboards()
-        {
-            CommonReplyKeyboard = new ReplyKeyboardMarkup(BotKeyboardCollection.GetCommonReplyKeyboard(), true);
-            RegisterReplyKeyboard = new ReplyKeyboardMarkup(BotKeyboardCollection.GetRegisterReplyKeyboard(), true);
-
-            VoteInlineKeyboard = new InlineKeyboardMarkup(BotKeyboardCollection.GetVoteInlineKeyboard());
-            PassKeyboardInlineKeyboard = new InlineKeyboardMarkup(BotKeyboardCollection.GetPassKeyboardInlineKeyboard());
-        }
 
         #endregion
 

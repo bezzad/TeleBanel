@@ -1,11 +1,40 @@
-﻿using Telegram.Bot.Types;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.InlineKeyboardButtons;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TeleBanel
 {
     public static class BotKeyboardCollection
     {
-        public static KeyboardButton[][] GetCommonReplyKeyboard()
+        public static Dictionary<string, IReplyMarkup> VoteInlineKeyboard { get; set; }
+        public static Dictionary<string, IReplyMarkup> PassKeyboardInlineKeyboard { get; set; }
+        public static Dictionary<string, IReplyMarkup> CommonReplyKeyboard { get; set; }
+        public static Dictionary<string, IReplyMarkup> RegisterReplyKeyboard { get; set; }
+
+
+        static BotKeyboardCollection()
+        {
+            CommonReplyKeyboard = new Dictionary<string, IReplyMarkup>();
+            RegisterReplyKeyboard = new Dictionary<string, IReplyMarkup>();
+            VoteInlineKeyboard = new Dictionary<string, IReplyMarkup>();
+            PassKeyboardInlineKeyboard = new Dictionary<string, IReplyMarkup>();
+
+            foreach (LanguageCultures lang in Enum.GetValues(typeof(LanguageCultures)))
+            {
+                var l = lang.ToString().ToLower();
+                CommonReplyKeyboard[l] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard("en"), true);
+                RegisterReplyKeyboard[l] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard("en"), true);
+                VoteInlineKeyboard[l] = new InlineKeyboardMarkup(GetVoteInlineKeyboard("en"));
+                PassKeyboardInlineKeyboard[l] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard("en"));
+            }
+
+        }
+
+
+        public static KeyboardButton[][] GetCommonReplyKeyboard(string lang)
         {
             var commonKeyboard = new[]
             {
@@ -37,7 +66,7 @@ namespace TeleBanel
 
             return commonKeyboard;
         }
-        public static KeyboardButton[] GetRegisterReplyKeyboard()
+        public static KeyboardButton[] GetRegisterReplyKeyboard(string lang)
         {
             var keyboard = new[]
             {
@@ -48,7 +77,7 @@ namespace TeleBanel
 
             return keyboard;
         }
-        public static InlineKeyboardButton[][] GetVoteInlineKeyboard()
+        public static InlineKeyboardButton[][] GetVoteInlineKeyboard(string lang)
         {
             var inlineKeys = new[]
             {
@@ -70,7 +99,7 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard()
+        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(string lang)
         {
             var inlineKeys = new[]
             {
