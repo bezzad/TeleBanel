@@ -120,6 +120,9 @@
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Change Language</value>
   </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
   <data name="EntryPasswordIsIncorrect" xml:space="preserve">
     <value>Password is incorrect</value>
   </data>

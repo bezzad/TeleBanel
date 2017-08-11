@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InlineKeyboardButtons;
@@ -9,32 +10,32 @@ namespace TeleBanel
 {
     public static class BotKeyboardCollection
     {
-        public static Dictionary<string, IReplyMarkup> VoteInlineKeyboard { get; set; }
-        public static Dictionary<string, IReplyMarkup> PassKeyboardInlineKeyboard { get; set; }
-        public static Dictionary<string, IReplyMarkup> CommonReplyKeyboard { get; set; }
-        public static Dictionary<string, IReplyMarkup> RegisterReplyKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> VoteInlineKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> PassKeyboardInlineKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> CommonReplyKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> RegisterReplyKeyboard { get; set; }
 
 
         static BotKeyboardCollection()
         {
-            CommonReplyKeyboard = new Dictionary<string, IReplyMarkup>();
-            RegisterReplyKeyboard = new Dictionary<string, IReplyMarkup>();
-            VoteInlineKeyboard = new Dictionary<string, IReplyMarkup>();
-            PassKeyboardInlineKeyboard = new Dictionary<string, IReplyMarkup>();
+            CommonReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
+            RegisterReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
+            VoteInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
+            PassKeyboardInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
 
             foreach (LanguageCultures lang in Enum.GetValues(typeof(LanguageCultures)))
             {
-                var l = lang.ToString().ToLower();
-                CommonReplyKeyboard[l] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard("en"), true);
-                RegisterReplyKeyboard[l] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard("en"), true);
-                VoteInlineKeyboard[l] = new InlineKeyboardMarkup(GetVoteInlineKeyboard("en"));
-                PassKeyboardInlineKeyboard[l] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard("en"));
+                var l = lang;
+                CommonReplyKeyboard[l] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(l), true);
+                RegisterReplyKeyboard[l] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(l), true);
+                VoteInlineKeyboard[l] = new InlineKeyboardMarkup(GetVoteInlineKeyboard(l));
+                PassKeyboardInlineKeyboard[l] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard(l));
             }
 
         }
 
 
-        public static KeyboardButton[][] GetCommonReplyKeyboard(string lang)
+        public static KeyboardButton[][] GetCommonReplyKeyboard(LanguageCultures lang)
         {
             var commonKeyboard = new[]
             {
@@ -66,18 +67,19 @@ namespace TeleBanel
 
             return commonKeyboard;
         }
-        public static KeyboardButton[] GetRegisterReplyKeyboard(string lang)
+        public static KeyboardButton[] GetRegisterReplyKeyboard(LanguageCultures lang)
         {
+            var culture = new CultureInfo(lang.ToString());
             var keyboard = new[]
             {
-                new KeyboardButton(Localization.Register),
-                new KeyboardButton(Localization.GetMyId),
-                new KeyboardButton(Localization.ChangeLanguage)
+                new KeyboardButton(Localization.ResourceManager.GetString("Register", culture)),
+                new KeyboardButton(Localization.ResourceManager.GetString("GetMyId", culture)),
+                new KeyboardButton(Localization.ResourceManager.GetString("ChangeLanguage", culture))
             };
 
             return keyboard;
         }
-        public static InlineKeyboardButton[][] GetVoteInlineKeyboard(string lang)
+        public static InlineKeyboardButton[][] GetVoteInlineKeyboard(LanguageCultures lang)
         {
             var inlineKeys = new[]
             {
@@ -99,7 +101,7 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(string lang)
+        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(LanguageCultures lang)
         {
             var inlineKeys = new[]
             {
@@ -125,7 +127,8 @@ namespace TeleBanel
                 {
                     new InlineKeyboardCallbackButton(Emoji.LeftArrow, "Backspace"),
                     new InlineKeyboardCallbackButton(Emoji.Keycap0, "Num.0"),
-                    new InlineKeyboardCallbackButton(Emoji.RightArrowCurvingLeft, "Enter")
+                    new InlineKeyboardCallbackButton(Localization.ResourceManager.GetString("Enter", 
+                        new CultureInfo(lang.ToString())), "Enter")
                 }
             };
 

@@ -120,6 +120,9 @@
   <data name="ChangeLanguage" xml:space="preserve">
     <value>تغییر زبان</value>
   </data>
+  <data name="Enter" xml:space="preserve">
+    <value>تایید</value>
+  </data>
   <data name="EntryPasswordIsIncorrect" xml:space="preserve">
     <value>رمز وارد شده اشتباه است</value>
   </data>

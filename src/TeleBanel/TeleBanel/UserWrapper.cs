@@ -1,4 +1,6 @@
-﻿namespace TeleBanel
+﻿using System.Globalization;
+
+namespace TeleBanel
 {
     public class UserWrapper
     {
@@ -6,7 +8,8 @@
         public string LastName { get; set; }
         public string UserName { get; set; }
         public int Id { get; set; }
-        public string LanguageCulture { get; set; } = "en";
+        public LanguageCultures LanguageCulture { get; set; } = LanguageCultures.En;
+        public CultureInfo Culture => new CultureInfo(LanguageCulture.ToString());
         public bool IsAuthenticated { get; set; } = false;
         public string Password { get; set; } = "";
 
