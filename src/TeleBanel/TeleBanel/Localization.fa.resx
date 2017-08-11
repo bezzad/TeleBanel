@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Change Language</value>
+    <value>تغییر زبان</value>
   </data>
   <data name="EntryPasswordIsIncorrect" xml:space="preserve">
-    <value>Password is incorrect</value>
+    <value>رمز وارد شده اشتباه است</value>
   </data>
   <data name="GetMyId" xml:space="preserve">
-    <value>Get My ID</value>
+    <value>کدم رو بده</value>
   </data>
   <data name="InvalidRequest" xml:space="preserve">
-    <value>Invalid request</value>
+    <value>درخواست نامعتبر</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Password</value>
+    <value>رمز عبور</value>
   </data>
   <data name="PasswordIsOk" xml:space="preserve">
-    <value>Password accepted</value>
+    <value>رمز وارد شده تایید شد</value>
   </data>
   <data name="PleaseChooseYourOptionDoubleDot" xml:space="preserve">
-    <value>Please choose your option double dot</value>
+    <value>لطفا گذینه ای را انتخاب کنید</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>ثبت نام</value>
   </data>
 </root>

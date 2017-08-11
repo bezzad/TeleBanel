@@ -62,7 +62,16 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to رمز وارد شده اشتباه است.
+        ///   Looks up a localized string similar to Change Language.
+        /// </summary>
+        internal static string ChangeLanguage {
+            get {
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is incorrect.
         /// </summary>
         internal static string EntryPasswordIsIncorrect {
             get {
@@ -71,7 +80,16 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to درخواست نامعتبر.
+        ///   Looks up a localized string similar to Get My ID.
+        /// </summary>
+        internal static string GetMyId {
+            get {
+                return ResourceManager.GetString("GetMyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid request.
         /// </summary>
         internal static string InvalidRequest {
             get {
@@ -80,7 +98,7 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to رمز عبور.
+        ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string Password {
             get {
@@ -89,7 +107,7 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to رمز وارد شده تایید شد.
+        ///   Looks up a localized string similar to Password accepted.
         /// </summary>
         internal static string PasswordIsOk {
             get {
@@ -98,11 +116,20 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا گذینه ای را انتخاب کنید.
+        ///   Looks up a localized string similar to Please choose your option double dot.
         /// </summary>
         internal static string PleaseChooseYourOptionDoubleDot {
             get {
                 return ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        internal static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
             }
         }
     }
