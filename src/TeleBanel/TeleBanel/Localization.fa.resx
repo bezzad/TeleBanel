@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>درباره ما</value>
+  </data>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>تغییر زبان</value>
   </data>
@@ -129,8 +132,20 @@
   <data name="GetMyId" xml:space="preserve">
     <value>کدم رو بده</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>راهنما</value>
+  </data>
+  <data name="Inbox" xml:space="preserve">
+    <value>صندوق پیام</value>
+  </data>
   <data name="InvalidRequest" xml:space="preserve">
     <value>درخواست نامعتبر</value>
+  </data>
+  <data name="Layout" xml:space="preserve">
+    <value>چیدمان</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>آرم</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>رمز عبور</value>
@@ -139,9 +154,18 @@
     <value>رمز وارد شده تایید شد</value>
   </data>
   <data name="PleaseChooseYourOptionDoubleDot" xml:space="preserve">
-    <value>لطفا گذینه ای را انتخاب کنید</value>
+    <value>لطفا گذینه ای را انتخاب کنید:</value>
+  </data>
+  <data name="Portfolio" xml:space="preserve">
+    <value>نمونه کارها</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>ثبت نام</value>
+  </data>
+  <data name="SocialLinks" xml:space="preserve">
+    <value>لینک شبکه های اجتماعی</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>شروع</value>
   </data>
 </root>

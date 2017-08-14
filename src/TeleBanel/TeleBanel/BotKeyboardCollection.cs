@@ -10,7 +10,6 @@ namespace TeleBanel
 {
     public static class BotKeyboardCollection
     {
-        public static Dictionary<LanguageCultures, IReplyMarkup> VoteInlineKeyboard { get; set; }
         public static Dictionary<LanguageCultures, IReplyMarkup> PassKeyboardInlineKeyboard { get; set; }
         public static Dictionary<LanguageCultures, IReplyMarkup> CommonReplyKeyboard { get; set; }
         public static Dictionary<LanguageCultures, IReplyMarkup> RegisterReplyKeyboard { get; set; }
@@ -20,56 +19,45 @@ namespace TeleBanel
         {
             CommonReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
             RegisterReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
-            VoteInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
             PassKeyboardInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
 
             foreach (LanguageCultures lang in Enum.GetValues(typeof(LanguageCultures)))
             {
-                var l = lang;
-                CommonReplyKeyboard[l] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(l), true);
-                RegisterReplyKeyboard[l] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(l), true);
-                VoteInlineKeyboard[l] = new InlineKeyboardMarkup(GetVoteInlineKeyboard(l));
-                PassKeyboardInlineKeyboard[l] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard(l));
+                var culture = new CultureInfo(lang.ToString());
+                CommonReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(culture), true);
+                RegisterReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(culture), true);
+                PassKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard(culture));
             }
 
         }
 
 
-        public static KeyboardButton[][] GetCommonReplyKeyboard(LanguageCultures lang)
+        public static KeyboardButton[][] GetCommonReplyKeyboard(CultureInfo culture)
         {
             var commonKeyboard = new[]
             {
                 new[]
                 {
-                    new KeyboardButton(Emoji.Pencil + "Edit Job"),
-                    new KeyboardButton("Add Job"),
-                    new KeyboardButton("Delete Job")
+                    new KeyboardButton(Emoji.GreenApple + Localization.ResourceManager.GetString("Portfolio", culture)),
+                    new KeyboardButton(Emoji.BallotBoxWithCheck + Localization.ResourceManager.GetString("Layout", culture)), // title, footer, about
                 },
                 new[]
                 {
-                    new KeyboardButton("Edit Title"),
-                    new KeyboardButton("Edit Footer"),
-                    new KeyboardButton("Edit Logo")
+                    new KeyboardButton(Emoji.LadyBeetle + Localization.ResourceManager.GetString("Logo", culture)),
+                    new KeyboardButton(Emoji.InboxTray + Localization.ResourceManager.GetString("Inbox", culture)),
+                    new KeyboardButton(Emoji.Link + Localization.ResourceManager.GetString("SocialLinks", culture))
                 },
                 new[]
                 {
-                    new KeyboardButton("Inbox"),
-                    new KeyboardButton("Edit Social Links"),
-                    new KeyboardButton("Edit About")
-                },
-                new[]
-                {
-                    new KeyboardButton("Change Language"),
-                    new KeyboardButton("Help"),
-                    new KeyboardButton("About")
+                    new KeyboardButton(Localization.ResourceManager.GetString("ChangeLanguage", culture)),
+                    new KeyboardButton(Localization.ResourceManager.GetString("About", culture))
                 }
             };
 
             return commonKeyboard;
         }
-        public static KeyboardButton[] GetRegisterReplyKeyboard(LanguageCultures lang)
+        public static KeyboardButton[] GetRegisterReplyKeyboard(CultureInfo culture)
         {
-            var culture = new CultureInfo(lang.ToString());
             var keyboard = new[]
             {
                 new KeyboardButton(Localization.ResourceManager.GetString("Register", culture)),
@@ -79,29 +67,7 @@ namespace TeleBanel
 
             return keyboard;
         }
-        public static InlineKeyboardButton[][] GetVoteInlineKeyboard(LanguageCultures lang)
-        {
-            var inlineKeys = new[]
-            {
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardCallbackButton("TESTs", "Alert"),
-                    new InlineKeyboardCallbackButton("CallbackData", "NoAlert")
-                },
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardSwitchInlineQueryButton("SwitchInlineQueryCurrentChat"),
-                    new InlineKeyboardSwitchInlineQueryCurrentChatButton("SwitchInlineQuery", "/register")
-                },
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardUrlButton("Url", "https://dezire.pro")
-                }
-            };
-
-            return inlineKeys;
-        }
-        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(LanguageCultures lang)
+        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(CultureInfo culture)
         {
             var inlineKeys = new[]
             {
@@ -127,8 +93,7 @@ namespace TeleBanel
                 {
                     new InlineKeyboardCallbackButton(Emoji.LeftArrow, "Backspace"),
                     new InlineKeyboardCallbackButton(Emoji.Keycap0, "Num.0"),
-                    new InlineKeyboardCallbackButton(Localization.ResourceManager.GetString("Enter", 
-                        new CultureInfo(lang.ToString())), "Enter")
+                    new InlineKeyboardCallbackButton(Localization.ResourceManager.GetString("Enter", culture), "Enter")
                 }
             };
 

@@ -134,44 +134,46 @@ namespace TeleBanel
                     default:
                         await Bot.SendTextMessageAsync(
                             e.Message.Chat.Id,
-                            Localization.PleaseChooseYourOptionDoubleDot,
+                            Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
                             replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                         break;
                 }
             }
             else
             {
-                switch (command)
+                if (command == Localization.ResourceManager.GetString("Start", Accounts[userId].Culture).ToLower())
                 {
-                    case "start":
-                        await Bot.SendTextMessageAsync(
-                            e.Message.Chat.Id,
-                            Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                            replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
-                        break;
-                    case "register":
-                        Accounts[userId].Password = "";
-                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                            Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": ",
-                            replyMarkup: BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
-                        break;
-                    case "change language":
-                        Accounts[userId].LanguageCulture = (LanguageCultures)Math.Abs((int)Accounts[userId].LanguageCulture - 1);
-                        await Bot.SendTextMessageAsync(
-                            e.Message.Chat.Id,
-                            Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                            replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
-                        break;
-                    case "get my id":
-                        await Bot.SendTextMessageAsync(userId,
-                            $"{e.Message.From.FirstName} {e.Message.From.LastName} your id is: {userId}");
-                        break;
-                    default:
-                        await Bot.SendTextMessageAsync(
-                            e.Message.Chat.Id,
-                            Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                            replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
-                        break;
+                    await Bot.SendTextMessageAsync(
+                        e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
+                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
+                }
+                else if (command == Localization.ResourceManager.GetString("Register", Accounts[userId].Culture).ToLower())
+                {
+                    Accounts[userId].Password = "";
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": ",
+                        replyMarkup: BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                }
+                else if (command == Localization.ResourceManager.GetString("ChangeLanguage", Accounts[userId].Culture).ToLower())
+                {
+                    Accounts[userId].LanguageCulture = (LanguageCultures)Math.Abs((int)Accounts[userId].LanguageCulture - 1);
+                    await Bot.SendTextMessageAsync(
+                        e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
+                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
+                }
+                else if (command == Localization.ResourceManager.GetString("GetMyId", Accounts[userId].Culture).ToLower())
+                {
+                    await Bot.SendTextMessageAsync(userId,
+                        $"{e.Message.From.FirstName} {e.Message.From.LastName} your id is: {userId}");
+                }
+                else
+                {
+                    await Bot.SendTextMessageAsync(
+                        e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
+                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
             }
         }
@@ -191,7 +193,8 @@ namespace TeleBanel
             if (!Accounts.ContainsKey(userId))
             {
                 await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                    Localization.EntryPasswordIsIncorrect, showAlert: true);
+                    Localization.ResourceManager.GetString("EntryPasswordIsIncorrect", Accounts[userId].Culture),
+                    showAlert: true);
                 return false;
             }
 
@@ -208,11 +211,12 @@ namespace TeleBanel
                     Accounts[userId].IsAuthenticated = true;
 
                     await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                        Localization.PasswordIsOk, showAlert: true);
+                        Localization.ResourceManager.GetString("PasswordIsOk", Accounts[userId].Culture),
+                        showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     await Bot.SendTextMessageAsync(
                         e.CallbackQuery.Message.Chat.Id,
-                        Localization.PleaseChooseYourOptionDoubleDot,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
                         replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                     return true;
                 }
@@ -220,7 +224,8 @@ namespace TeleBanel
                 {
                     Accounts[userId].Password = "";
                     await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                        Localization.EntryPasswordIsIncorrect, true);
+                        Localization.ResourceManager.GetString("EntryPasswordIsIncorrect", Accounts[userId].Culture),
+                        true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     return true;
                 }
@@ -240,7 +245,7 @@ namespace TeleBanel
             }
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
-                Localization.Password + ":" + new string(Accounts[userId].Password.Select(x => Emoji.EightPointedStar[0]).ToArray()),
+                Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ":" + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
                 ParseMode.Default, false, BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
 
             return true;
