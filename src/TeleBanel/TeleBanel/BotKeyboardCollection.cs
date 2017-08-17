@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -38,19 +37,19 @@ namespace TeleBanel
             {
                 new[]
                 {
-                    new KeyboardButton(Emoji.GreenApple + Localization.ResourceManager.GetString("Portfolio", culture)),
-                    new KeyboardButton(Emoji.BallotBoxWithCheck + Localization.ResourceManager.GetString("Layout", culture)), // title, footer, about
+                    new KeyboardButton(Emoji.CardFileBox + " " + Localization.ResourceManager.GetString("Portfolio", culture)),
+                    new KeyboardButton(Emoji.Gear + " " + Localization.ResourceManager.GetString("Layout", culture)), // title, footer, about
                 },
                 new[]
                 {
-                    new KeyboardButton(Emoji.LadyBeetle + Localization.ResourceManager.GetString("Logo", culture)),
-                    new KeyboardButton(Emoji.InboxTray + Localization.ResourceManager.GetString("Inbox", culture)),
-                    new KeyboardButton(Emoji.Link + Localization.ResourceManager.GetString("SocialLinks", culture))
+                    new KeyboardButton(Emoji.LadyBeetle + " " + Localization.ResourceManager.GetString("Logo", culture)),
+                    new KeyboardButton(Emoji.ClosedMailboxWithLoweredFlag + " " + Localization.ResourceManager.GetString("Inbox", culture)),
+                    new KeyboardButton(Emoji.Link + " " + Localization.ResourceManager.GetString("SocialLinks", culture))
                 },
                 new[]
                 {
-                    new KeyboardButton(Localization.ResourceManager.GetString("ChangeLanguage", culture)),
-                    new KeyboardButton(Localization.ResourceManager.GetString("About", culture))
+                    new KeyboardButton(Emoji.Information + " " + Localization.ResourceManager.GetString("About", culture)),
+                    new KeyboardButton(Emoji.ABButtonBloodType + " " + Localization.ResourceManager.GetString("ChangeLanguage", culture))
                 }
             };
 
@@ -60,9 +59,9 @@ namespace TeleBanel
         {
             var keyboard = new[]
             {
-                new KeyboardButton(Localization.ResourceManager.GetString("Register", culture)),
-                new KeyboardButton(Localization.ResourceManager.GetString("GetMyId", culture)),
-                new KeyboardButton(Localization.ResourceManager.GetString("ChangeLanguage", culture))
+                new KeyboardButton(Emoji.Key + " " + Localization.ResourceManager.GetString("Register", culture)),
+                new KeyboardButton(Emoji.IDButton + " " + Localization.ResourceManager.GetString("GetMyId", culture)),
+                new KeyboardButton(Emoji.ABButtonBloodType + " " + Localization.ResourceManager.GetString("ChangeLanguage", culture))
             };
 
             return keyboard;
@@ -93,7 +92,7 @@ namespace TeleBanel
                 {
                     new InlineKeyboardCallbackButton(Emoji.LeftArrow, "Backspace"),
                     new InlineKeyboardCallbackButton(Emoji.Keycap0, "Num.0"),
-                    new InlineKeyboardCallbackButton(Localization.ResourceManager.GetString("Enter", culture), "Enter")
+                    new InlineKeyboardCallbackButton(Emoji.OKButton, "Enter")
                 }
             };
 

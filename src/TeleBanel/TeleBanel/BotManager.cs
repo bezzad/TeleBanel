@@ -115,7 +115,7 @@ namespace TeleBanel
         {
             var userId = e.Message.From.Id;
 
-            var command = e.Message.Text?.ToLower()?.Replace("/", "");
+            var command = e.Message.Text?.GetNetMessage();
 
             if (e.Message.Chat.Type != ChatType.Private ||
                 e.Message.Type != MessageType.TextMessage)
@@ -245,7 +245,7 @@ namespace TeleBanel
             }
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
-                Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ":" + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
+                Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
                 ParseMode.Default, false, BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
 
             return true;
