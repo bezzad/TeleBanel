@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,9 +10,9 @@
 
   <ItemGroup>
     <Compile Update="Localization.Designer.cs">
+      <DependentUpon>Localization.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -22,8 +22,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
