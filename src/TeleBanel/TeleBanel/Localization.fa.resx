@@ -156,6 +156,9 @@
   <data name="PleaseChooseYourOptionDoubleDot" xml:space="preserve">
     <value>لطفا گذینه ای را انتخاب کنید:</value>
   </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>لطفا شکیبا باشید . . .</value>
+  </data>
   <data name="Portfolio" xml:space="preserve">
     <value>نمونه کارها</value>
   </data>

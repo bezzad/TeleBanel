@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -20,6 +22,7 @@ namespace TeleBanel
         public User Me { get; set; }
         public CultureInfo CurrentCulture { get; set; }
 
+        public IJobManager JobManager { set; get; }
 
         #endregion
 
@@ -124,7 +127,6 @@ namespace TeleBanel
                 return;
             }
 
-
             var authenticated = UserAuthenticated(e.Message.From);
 
             if (authenticated) // CommonReplyKeyboard
@@ -136,6 +138,11 @@ namespace TeleBanel
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
                         replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                }
+                else if (command == Localization.ResourceManager.GetString("Portfolio", Accounts[userId].Culture).ToLower())
+                {
+                    await SendPhotoAsync(e.Message.Chat.Id, userId,
+                        "TEST caption", "IMG_4193.JPG", System.IO.File.ReadAllBytes(@"D:\IMG_4193.JPG"));
                 }
                 else
                 {
@@ -184,7 +191,7 @@ namespace TeleBanel
             }
         }
 
-        
+
         public async Task<bool> AsPassword(Telegram.Bot.Args.CallbackQueryEventArgs e)
         {
             var userId = e.CallbackQuery.From.Id;
@@ -256,7 +263,20 @@ namespace TeleBanel
             return Accounts[user.Id].IsAuthenticated;
         }
 
+        public async Task SendPhotoAsync(ChatId chatId, int userId, string caption, string imageName, byte[] imageBytes)
+        {
+            var msg = await Bot.SendTextMessageAsync(chatId, 
+                Localization.ResourceManager.GetString("PleaseWait", Accounts[userId].Culture));
+            
+            using (var stream = new MemoryStream(imageBytes))
+            {
+                await Bot.SendPhotoAsync(chatId, new FileToSend(imageName, stream), caption);
+            }
+
+            await Bot.DeleteMessageAsync(msg.Chat.Id, msg.MessageId);
+        }
+
         #endregion
-        
+
     }
 }

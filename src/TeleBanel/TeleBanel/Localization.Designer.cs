@@ -179,6 +179,15 @@ namespace TeleBanel {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please wait . . . .
+        /// </summary>
+        internal static string PleaseWait {
+            get {
+                return ResourceManager.GetString("PleaseWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Portfolio.
         /// </summary>
         internal static string Portfolio {
