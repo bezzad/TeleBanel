@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace TeleBanel
 {
@@ -8,10 +10,14 @@ namespace TeleBanel
         public string LastName { get; set; }
         public string UserName { get; set; }
         public int Id { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public LanguageCultures LanguageCulture { get; set; } = LanguageCultures.En;
-        public CultureInfo Culture => new CultureInfo(LanguageCulture.ToString());
         public bool IsAuthenticated { get; set; } = false;
-        public string Password { get; set; } = "";
+
+        [JsonIgnore]
+        internal string Password { get; set; } = "";
+        [JsonIgnore]
+        public CultureInfo Culture => new CultureInfo(LanguageCulture.ToString());
 
 
         public static UserWrapper Factory(Telegram.Bot.Types.User telUser)

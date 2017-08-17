@@ -38,7 +38,7 @@ namespace TeleBanel
                 new[]
                 {
                     new KeyboardButton(Emoji.CardFileBox + " " + Localization.ResourceManager.GetString("Portfolio", culture)),
-                    new KeyboardButton(Emoji.Gear + " " + Localization.ResourceManager.GetString("Layout", culture)), // title, footer, about
+                    new KeyboardButton(Emoji.Gear + " " + Localization.ResourceManager.GetString("Layout", culture)) // title, footer, about
                 },
                 new[]
                 {

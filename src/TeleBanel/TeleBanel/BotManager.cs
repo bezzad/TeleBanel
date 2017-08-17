@@ -59,7 +59,7 @@ namespace TeleBanel
         }
         private void Bot_OnInlineQuery(object sender, Telegram.Bot.Args.InlineQueryEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.InlineQuery.Query)) return;
+            //if (string.IsNullOrEmpty(e.InlineQuery.Query)) return;
 
             //InlineQueryResult[] results = {
             //    new InlineQueryResultLocation
@@ -114,11 +114,11 @@ namespace TeleBanel
         private async void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
             var userId = e.Message.From.Id;
-
             var command = e.Message.Text?.GetNetMessage();
 
             if (e.Message.Chat.Type != ChatType.Private ||
-                e.Message.Type != MessageType.TextMessage)
+                e.Message.Type != MessageType.TextMessage ||
+                string.IsNullOrEmpty(command))
             {
                 await Bot.SendTextMessageAsync(e.Message.Chat.Id, Localization.InvalidRequest);
                 return;
@@ -127,19 +127,25 @@ namespace TeleBanel
 
             var authenticated = UserAuthenticated(e.Message.From);
 
-            if (authenticated)
+            if (authenticated) // CommonReplyKeyboard
             {
-                switch (command)
+                if (command == Localization.ResourceManager.GetString("ChangeLanguage", Accounts[userId].Culture).ToLower())
                 {
-                    default:
-                        await Bot.SendTextMessageAsync(
-                            e.Message.Chat.Id,
-                            Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                            replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
-                        break;
+                    Accounts[userId].LanguageCulture = (LanguageCultures)Math.Abs((int)Accounts[userId].LanguageCulture - 1);
+                    await Bot.SendTextMessageAsync(
+                        e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
+                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                }
+                else
+                {
+                    await Bot.SendTextMessageAsync(
+                        e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
+                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
             }
-            else
+            else // RegisterReplyKeyboard
             {
                 if (command == Localization.ResourceManager.GetString("Start", Accounts[userId].Culture).ToLower())
                 {
@@ -155,6 +161,11 @@ namespace TeleBanel
                         Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": ",
                         replyMarkup: BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
                 }
+                else if (command == Localization.ResourceManager.GetString("GetMyId", Accounts[userId].Culture).ToLower())
+                {
+                    await Bot.SendTextMessageAsync(userId,
+                        $"{e.Message.From.FirstName} {e.Message.From.LastName}, ID: {userId}");
+                }
                 else if (command == Localization.ResourceManager.GetString("ChangeLanguage", Accounts[userId].Culture).ToLower())
                 {
                     Accounts[userId].LanguageCulture = (LanguageCultures)Math.Abs((int)Accounts[userId].LanguageCulture - 1);
@@ -162,11 +173,6 @@ namespace TeleBanel
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
                         replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
-                }
-                else if (command == Localization.ResourceManager.GetString("GetMyId", Accounts[userId].Culture).ToLower())
-                {
-                    await Bot.SendTextMessageAsync(userId,
-                        $"{e.Message.From.FirstName} {e.Message.From.LastName} your id is: {userId}");
                 }
                 else
                 {
@@ -178,14 +184,7 @@ namespace TeleBanel
             }
         }
 
-        public bool UserAuthenticated(Telegram.Bot.Types.User user)
-        {
-            if (!Accounts.ContainsKey(user.Id))
-                Accounts[user.Id] = UserWrapper.Factory(user);
-
-            return Accounts[user.Id].IsAuthenticated;
-        }
-
+        
         public async Task<bool> AsPassword(Telegram.Bot.Args.CallbackQueryEventArgs e)
         {
             var userId = e.CallbackQuery.From.Id;
@@ -225,7 +224,7 @@ namespace TeleBanel
                     Accounts[userId].Password = "";
                     await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
                         Localization.ResourceManager.GetString("EntryPasswordIsIncorrect", Accounts[userId].Culture),
-                        true);
+                        showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     return true;
                 }
@@ -234,8 +233,7 @@ namespace TeleBanel
             {
                 if (Accounts[userId].Password.Length > 0)
                 {
-                    Accounts[userId].Password =
-                        Accounts[userId]
+                    Accounts[userId].Password = Accounts[userId]
                             .Password.Remove(Accounts[userId].Password.Length - 1, 1);
                 }
             }
@@ -250,9 +248,15 @@ namespace TeleBanel
 
             return true;
         }
+        public bool UserAuthenticated(User user)
+        {
+            if (!Accounts.ContainsKey(user.Id))
+                Accounts[user.Id] = UserWrapper.Factory(user);
 
+            return Accounts[user.Id].IsAuthenticated;
+        }
 
         #endregion
-
+        
     }
 }
