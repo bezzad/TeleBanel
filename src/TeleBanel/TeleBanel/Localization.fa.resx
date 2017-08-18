@@ -120,8 +120,17 @@
   <data name="About" xml:space="preserve">
     <value>درباره ما</value>
   </data>
+  <data name="AddJob" xml:space="preserve">
+    <value>افزودن کار</value>
+  </data>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>تغییر زبان</value>
+  </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value>حذف کار</value>
+  </data>
+  <data name="EditJob" xml:space="preserve">
+    <value>ویرایش کار</value>
   </data>
   <data name="Enter" xml:space="preserve">
     <value>تایید</value>

@@ -9,7 +9,8 @@ namespace TeleBanel
 {
     public static class BotKeyboardCollection
     {
-        public static Dictionary<LanguageCultures, IReplyMarkup> PassKeyboardInlineKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> PasswordKeyboardInlineKeyboard { get; set; }
+        public static Dictionary<LanguageCultures, IReplyMarkup> PortfolioKeyboardInlineKeyboard { get; set; }
         public static Dictionary<LanguageCultures, IReplyMarkup> CommonReplyKeyboard { get; set; }
         public static Dictionary<LanguageCultures, IReplyMarkup> RegisterReplyKeyboard { get; set; }
 
@@ -18,14 +19,16 @@ namespace TeleBanel
         {
             CommonReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
             RegisterReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
-            PassKeyboardInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
+            PasswordKeyboardInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
+            PortfolioKeyboardInlineKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
 
             foreach (LanguageCultures lang in Enum.GetValues(typeof(LanguageCultures)))
             {
                 var culture = new CultureInfo(lang.ToString());
                 CommonReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(culture), true);
                 RegisterReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(culture), true);
-                PassKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPassKeyboardInlineKeyboard(culture));
+                PasswordKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard(culture));
+                PortfolioKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(culture));
             }
 
         }
@@ -66,33 +69,49 @@ namespace TeleBanel
 
             return keyboard;
         }
-        public static InlineKeyboardButton[][] GetPassKeyboardInlineKeyboard(CultureInfo culture)
+
+
+        public static InlineKeyboardButton[][] GetPasswordKeyboardInlineKeyboard(CultureInfo culture)
         {
             var inlineKeys = new[]
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap7, "Num.7"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap8, "Num.8"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap9, "Num.9")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap7, "Password_Num.7"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap8, "Password_Num.8"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap9, "Password_Num.9")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap4, "Num.4"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap5, "Num.5"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap6, "Num.6")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap4, "Password_Num.4"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap5, "Password_Num.5"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap6, "Password_Num.6")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap1, "Num.1"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap2, "Num.2"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap3, "Num.3")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap1, "Password_Num.1"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap2, "Password_Num.2"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap3, "Password_Num.3")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.LeftArrow, "Backspace"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap0, "Num.0"),
-                    new InlineKeyboardCallbackButton(Emoji.OKButton, "Enter")
+                    new InlineKeyboardCallbackButton(Emoji.LeftArrow, "Password_Backspace"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap0, "Password_Num.0"),
+                    new InlineKeyboardCallbackButton(Emoji.OKButton, "Password_Enter")
+                }
+            };
+
+            return inlineKeys;
+        }
+        public static InlineKeyboardButton[][] GetPortfolioKeyboardInlineKeyboard(CultureInfo culture)
+        {
+            var inlineKeys = new[]
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton(Emoji.HeavyPlusSign + " " + Localization.ResourceManager.GetString("AddJob", culture), "Portfolio_AddJob"),
+                    new InlineKeyboardCallbackButton(Emoji.HeavyCheckMark + " " +  Localization.ResourceManager.GetString("EditJob", culture), "Portfolio_EditJob"),
+                    new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " +  Localization.ResourceManager.GetString("DeleteJob", culture), "Portfolio_DeleteJob")
                 }
             };
 

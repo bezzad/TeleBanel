@@ -53,7 +53,7 @@ namespace TeleBanel
             Bot.OnInlineResultChosen += Bot_OnInlineResultChosen;
 
             Me = await Bot.GetMeAsync();
-            Console.WriteLine("Bot loaded");
+            Console.WriteLine($"{Me.Username} Connected.");
         }
 
         private void Bot_OnInlineResultChosen(object sender, Telegram.Bot.Args.ChosenInlineResultEventArgs e)
@@ -99,14 +99,26 @@ namespace TeleBanel
         {
             var userId = e.CallbackQuery.From.Id;
 
-            if (UserAuthenticated(e.CallbackQuery.From))
+            if (UserAuthenticated(e.CallbackQuery.From)) // user authenticated
             {
-                await Bot.SendTextMessageAsync(
-                    e.CallbackQuery.Message.Chat.Id,
-                    Localization.PleaseChooseYourOptionDoubleDot,
-                    replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                var query = e.CallbackQuery.Data;
+                if (query.StartsWith("portfolio_"))
+                {
+
+                }
+                else if (query.StartsWith("layout_"))
+                {
+
+                }
+                else
+                {
+                    await Bot.SendTextMessageAsync(
+                        e.CallbackQuery.Message.Chat.Id,
+                        Localization.PleaseChooseYourOptionDoubleDot,
+                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                }
             }
-            else
+            else // Before authenticate
             {
                 if (await AsPassword(e))
                 {
@@ -141,8 +153,9 @@ namespace TeleBanel
                 }
                 else if (command == Localization.ResourceManager.GetString("Portfolio", Accounts[userId].Culture).ToLower())
                 {
-                    await SendPhotoAsync(e.Message.Chat.Id, userId,
-                        "TEST caption", "IMG_4193.JPG", System.IO.File.ReadAllBytes(@"D:\IMG_4193.JPG"));
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.ResourceManager.GetString("Portfolio", Accounts[userId].Culture) + ": ",
+                        replyMarkup: BotKeyboardCollection.PortfolioKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else
                 {
@@ -166,7 +179,7 @@ namespace TeleBanel
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": ",
-                        replyMarkup: BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: BotKeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else if (command == Localization.ResourceManager.GetString("GetMyId", Accounts[userId].Culture).ToLower())
                 {
@@ -205,12 +218,13 @@ namespace TeleBanel
             }
 
             var data = e.CallbackQuery.Data.ToLower();
+            if (!data.StartsWith("password_")) return false;
 
-            if (data.StartsWith("num."))
+            if (data.StartsWith("password_num."))
             {
-                Accounts[userId].Password += data.Replace("num.", "");
+                Accounts[userId].Password += data.Replace("password_num.", "");
             }
-            else if (data == "enter")
+            else if (data == "password_enter")
             {
                 if (Accounts[userId].Password == BotApiPassword)
                 {
@@ -236,7 +250,7 @@ namespace TeleBanel
                     return true;
                 }
             }
-            else if (data == "backspace")
+            else if (data == "password_backspace")
             {
                 if (Accounts[userId].Password.Length > 0)
                 {
@@ -251,7 +265,7 @@ namespace TeleBanel
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
                 Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
-                ParseMode.Default, false, BotKeyboardCollection.PassKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                ParseMode.Default, false, BotKeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
 
             return true;
         }
@@ -265,9 +279,9 @@ namespace TeleBanel
 
         public async Task SendPhotoAsync(ChatId chatId, int userId, string caption, string imageName, byte[] imageBytes)
         {
-            var msg = await Bot.SendTextMessageAsync(chatId, 
+            var msg = await Bot.SendTextMessageAsync(chatId,
                 Localization.ResourceManager.GetString("PleaseWait", Accounts[userId].Culture));
-            
+
             using (var stream = new MemoryStream(imageBytes))
             {
                 await Bot.SendPhotoAsync(chatId, new FileToSend(imageName, stream), caption);

@@ -120,8 +120,17 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AddJob" xml:space="preserve">
+    <value>Add Job</value>
+  </data>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Change Language</value>
+  </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value>Delete Job</value>
+  </data>
+  <data name="EditJob" xml:space="preserve">
+    <value>Edit Job</value>
   </data>
   <data name="Enter" xml:space="preserve">
     <value>Enter</value>
