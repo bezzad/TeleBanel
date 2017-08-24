@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -16,9 +15,11 @@ namespace TeleBanel
         #region Properties
 
         protected string BotApiPassword { get; set; }
+        public string WebsiteUrl { get; set; }
         public string BotApiKey { get; set; }
         public Dictionary<int, UserWrapper> Accounts { get; set; }
         public TelegramBotClient Bot { get; set; }
+        public BotKeyboardCollection KeyboardCollection { get; set; }
         public User Me { get; set; }
         public CultureInfo CurrentCulture { get; set; }
 
@@ -33,10 +34,12 @@ namespace TeleBanel
             CurrentCulture = new CultureInfo(LanguageCultures.Fa.ToString().ToLower());
             Accounts = new Dictionary<int, UserWrapper>();
         }
-        public BotManager(string apiKey, string botPassword) : this()
+        public BotManager(string apiKey, string botPassword, string url) : this()
         {
             BotApiKey = apiKey;
             BotApiPassword = botPassword;
+            WebsiteUrl = url;
+            KeyboardCollection = new BotKeyboardCollection(url);
         }
 
         #endregion
@@ -101,30 +104,21 @@ namespace TeleBanel
 
             if (UserAuthenticated(e.CallbackQuery.From)) // user authenticated
             {
-                var query = e.CallbackQuery.Data;
-                if (query.StartsWith("portfolio_"))
-                {
-
-                }
-                else if (query.StartsWith("layout_"))
-                {
-
-                }
+                var query = e.CallbackQuery.Data.ToLower();
+                if (query.StartsWith(InlinePrefixKeys.PortfolioKey))
+                    GoNextPortfolioStep(e);
+                else if (query.StartsWith(InlinePrefixKeys.LayoutKey))
+                    GoNextLayoutStep(e);
                 else
                 {
                     await Bot.SendTextMessageAsync(
                         e.CallbackQuery.Message.Chat.Id,
                         Localization.PleaseChooseYourOptionDoubleDot,
-                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
             }
             else // Before authenticate
-            {
-                if (await AsPassword(e))
-                {
-
-                }
-            }
+                await AsPassword(e);
         }
         private async void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
@@ -149,20 +143,20 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else if (command == Localization.ResourceManager.GetString("Portfolio", Accounts[userId].Culture).ToLower())
                 {
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("Portfolio", Accounts[userId].Culture) + ": ",
-                        replyMarkup: BotKeyboardCollection.PortfolioKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.PortfolioKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else
                 {
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
             }
             else // RegisterReplyKeyboard
@@ -172,14 +166,14 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else if (command == Localization.ResourceManager.GetString("Register", Accounts[userId].Culture).ToLower())
                 {
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": ",
-                        replyMarkup: BotKeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else if (command == Localization.ResourceManager.GetString("GetMyId", Accounts[userId].Culture).ToLower())
                 {
@@ -192,14 +186,14 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
                 else
                 {
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard[Accounts[userId].LanguageCulture]);
                 }
             }
         }
@@ -237,7 +231,7 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(
                         e.CallbackQuery.Message.Chat.Id,
                         Localization.ResourceManager.GetString("PleaseChooseYourOptionDoubleDot", Accounts[userId].Culture),
-                        replyMarkup: BotKeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
+                        replyMarkup: KeyboardCollection.CommonReplyKeyboard[Accounts[userId].LanguageCulture]);
                     return true;
                 }
                 else // password is incorrect
@@ -265,7 +259,7 @@ namespace TeleBanel
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
                 Localization.ResourceManager.GetString("Password", Accounts[userId].Culture) + ": " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
-                ParseMode.Default, false, BotKeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
+                ParseMode.Default, false, KeyboardCollection.PasswordKeyboardInlineKeyboard[Accounts[userId].LanguageCulture]);
 
             return true;
         }
@@ -290,6 +284,39 @@ namespace TeleBanel
             await Bot.DeleteMessageAsync(msg.Chat.Id, msg.MessageId);
         }
 
+        public void GoNextLayoutStep(Telegram.Bot.Args.CallbackQueryEventArgs e)
+        {
+            var query = e.CallbackQuery.Data.ToLower().Replace(InlinePrefixKeys.LayoutKey, "");
+
+        }
+
+        public async void GoNextPortfolioStep(Telegram.Bot.Args.CallbackQueryEventArgs e)
+        {
+            var query = e.CallbackQuery.Data.ToLower().Replace(InlinePrefixKeys.PortfolioKey, "");
+
+            switch (query)
+            {
+                case "addjob":
+                    {
+                        break;
+                    }
+                case "showjob":
+                    {
+                        var job = JobManager.GetJob(new Random().Next().ToString());
+                        await SendPhotoAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.From.Id,
+                            job.Title, job.Id, job.Image);
+                        break;
+                    }
+                case "editjob":
+                    {
+                        break;
+                    }
+                case "deletejob":
+                    {
+                        break;
+                    }
+            }
+        }
         #endregion
 
     }

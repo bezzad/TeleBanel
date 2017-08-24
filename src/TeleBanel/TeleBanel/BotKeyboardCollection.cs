@@ -7,15 +7,15 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TeleBanel
 {
-    public static class BotKeyboardCollection
+    public class BotKeyboardCollection
     {
-        public static Dictionary<LanguageCultures, IReplyMarkup> PasswordKeyboardInlineKeyboard { get; set; }
-        public static Dictionary<LanguageCultures, IReplyMarkup> PortfolioKeyboardInlineKeyboard { get; set; }
-        public static Dictionary<LanguageCultures, IReplyMarkup> CommonReplyKeyboard { get; set; }
-        public static Dictionary<LanguageCultures, IReplyMarkup> RegisterReplyKeyboard { get; set; }
+        public Dictionary<LanguageCultures, IReplyMarkup> PasswordKeyboardInlineKeyboard { get; set; }
+        public Dictionary<LanguageCultures, IReplyMarkup> PortfolioKeyboardInlineKeyboard { get; set; }
+        public Dictionary<LanguageCultures, IReplyMarkup> CommonReplyKeyboard { get; set; }
+        public Dictionary<LanguageCultures, IReplyMarkup> RegisterReplyKeyboard { get; set; }
 
 
-        static BotKeyboardCollection()
+        public BotKeyboardCollection(string url)
         {
             CommonReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
             RegisterReplyKeyboard = new Dictionary<LanguageCultures, IReplyMarkup>();
@@ -28,13 +28,12 @@ namespace TeleBanel
                 CommonReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(culture), true);
                 RegisterReplyKeyboard[lang] = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(culture), true);
                 PasswordKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard(culture));
-                PortfolioKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(culture));
+                PortfolioKeyboardInlineKeyboard[lang] = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(culture, url));
             }
 
         }
 
-
-        public static KeyboardButton[][] GetCommonReplyKeyboard(CultureInfo culture)
+        public KeyboardButton[][] GetCommonReplyKeyboard(CultureInfo culture)
         {
             var commonKeyboard = new[]
             {
@@ -58,7 +57,7 @@ namespace TeleBanel
 
             return commonKeyboard;
         }
-        public static KeyboardButton[] GetRegisterReplyKeyboard(CultureInfo culture)
+        public KeyboardButton[] GetRegisterReplyKeyboard(CultureInfo culture)
         {
             var keyboard = new[]
             {
@@ -69,9 +68,8 @@ namespace TeleBanel
 
             return keyboard;
         }
-
-
-        public static InlineKeyboardButton[][] GetPasswordKeyboardInlineKeyboard(CultureInfo culture)
+        
+        public InlineKeyboardButton[][] GetPasswordKeyboardInlineKeyboard(CultureInfo culture)
         {
             var inlineKeys = new[]
             {
@@ -103,15 +101,24 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-        public static InlineKeyboardButton[][] GetPortfolioKeyboardInlineKeyboard(CultureInfo culture)
+        public InlineKeyboardButton[][] GetPortfolioKeyboardInlineKeyboard(CultureInfo culture, string url)
         {
             var inlineKeys = new[]
             {
                 new InlineKeyboardButton[]
                 {
                     new InlineKeyboardCallbackButton(Emoji.HeavyPlusSign + " " + Localization.ResourceManager.GetString("AddJob", culture), "Portfolio_AddJob"),
+                    new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ResourceManager.GetString("ShowJob", culture), "Portfolio_ShowJob")
+                    
+                },
+                new InlineKeyboardButton[]
+                {
                     new InlineKeyboardCallbackButton(Emoji.HeavyCheckMark + " " +  Localization.ResourceManager.GetString("EditJob", culture), "Portfolio_EditJob"),
                     new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " +  Localization.ResourceManager.GetString("DeleteJob", culture), "Portfolio_DeleteJob")
+                },
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardUrlButton(Emoji.Link + " " +  Localization.ResourceManager.GetString("VisitWebsite", culture), url)
                 }
             };
 

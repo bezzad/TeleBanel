@@ -174,10 +174,16 @@
   <data name="Register" xml:space="preserve">
     <value>ثبت نام</value>
   </data>
+  <data name="ShowJob" xml:space="preserve">
+    <value>نمایش کار</value>
+  </data>
   <data name="SocialLinks" xml:space="preserve">
     <value>لینک شبکه های اجتماعی</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>شروع</value>
+  </data>
+  <data name="VisitWebsite" xml:space="preserve">
+    <value>مشاهده وب سایت</value>
   </data>
 </root>

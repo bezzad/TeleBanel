@@ -233,6 +233,15 @@ namespace TeleBanel {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Job.
+        /// </summary>
+        internal static string ShowJob {
+            get {
+                return ResourceManager.GetString("ShowJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Social Links.
         /// </summary>
         internal static string SocialLinks {
@@ -247,6 +256,15 @@ namespace TeleBanel {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit Website.
+        /// </summary>
+        internal static string VisitWebsite {
+            get {
+                return ResourceManager.GetString("VisitWebsite", resourceCulture);
             }
         }
     }

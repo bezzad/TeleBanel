@@ -174,10 +174,16 @@
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="ShowJob" xml:space="preserve">
+    <value>Show Job</value>
+  </data>
   <data name="SocialLinks" xml:space="preserve">
     <value>Social Links</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="VisitWebsite" xml:space="preserve">
+    <value>Visit Website</value>
   </data>
 </root>

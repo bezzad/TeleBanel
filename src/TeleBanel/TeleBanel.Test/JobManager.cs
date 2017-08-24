@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace TeleBanel.Test
 {
@@ -8,7 +7,12 @@ namespace TeleBanel.Test
     {
         public Job GetJob(string id)
         {
-            throw new NotImplementedException();
+            return new Job()
+            {
+                Id = id,
+                Title = "عنوان عکس " + id,
+                Image = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\Resources\TestImage.JPG")
+            };
         }
 
         public Job[] GetJobs()
