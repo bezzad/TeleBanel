@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace TeleBanel
+namespace TeleBanel.Models
 {
-    public class UserWrapper
+    public class UserWrapper: IUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

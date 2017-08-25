@@ -1,4 +1,4 @@
-﻿namespace TeleBanel
+﻿namespace TeleBanel.Models
 {
     public class Job
     {

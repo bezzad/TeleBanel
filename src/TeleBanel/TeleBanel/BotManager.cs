@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TeleBanel.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -23,7 +24,7 @@ namespace TeleBanel
         public User Me { get; set; }
         public CultureInfo CurrentCulture { get; set; }
 
-        public IJobManager JobManager { set; get; }
+        public IJob JobManager { set; get; }
 
         #endregion
 

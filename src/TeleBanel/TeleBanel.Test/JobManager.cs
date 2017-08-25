@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using TeleBanel.Models;
 
 namespace TeleBanel.Test
 {
-    public class JobManager : IJobManager
+    public class JobManager : IJob
     {
         public Job GetJob(string id)
         {
@@ -16,6 +17,11 @@ namespace TeleBanel.Test
         }
 
         public Job[] GetJobs()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string[] GetJobsId()
         {
             throw new NotImplementedException();
         }

@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeleBanel.Test", "TeleBanel.Test\TeleBanel.Test.csproj", "{00C08B67-3E79-4502-AD84-4260E50F72E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBanel", "TeleBanel\TeleBanel.csproj", "{C5FB2134-62F4-4C33-810E-405B3896961D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeleBanel", "TeleBanel\TeleBanel.csproj", "{C5FB2134-62F4-4C33-810E-405B3896961D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ACB9229E-8FD1-438C-B517-3FE638B7D6C2}"
+	ProjectSection(SolutionItems) = preProject
+		DatabaseGeneratorScript.sql = DatabaseGeneratorScript.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF5A589D-0259-41ED-ADA5-8E5F9BA68601}
 	EndGlobalSection
 EndGlobal

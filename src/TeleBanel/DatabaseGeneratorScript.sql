@@ -1,0 +1,295 @@
+﻿USE [TeleBanel]
+GO
+ALTER TABLE [dbo].[Websites] DROP CONSTRAINT [FK_Websites_Files]
+GO
+ALTER TABLE [dbo].[Websites] DROP CONSTRAINT [FK_Websites_Bots]
+GO
+ALTER TABLE [dbo].[Jobs] DROP CONSTRAINT [FK_Jobs_Files]
+GO
+ALTER TABLE [dbo].[Jobs] DROP CONSTRAINT [FK_Jobs_Bots]
+GO
+ALTER TABLE [dbo].[BotUsers] DROP CONSTRAINT [FK_BotUsers_Users]
+GO
+ALTER TABLE [dbo].[BotUsers] DROP CONSTRAINT [FK_BotUsers_Bots]
+GO
+ALTER TABLE [dbo].[BotUsers] DROP CONSTRAINT [DF_BotUsers_Culture]
+GO
+ALTER TABLE [dbo].[BotUsers] DROP CONSTRAINT [DF_BotUsers_LastLoginDate]
+GO
+ALTER TABLE [dbo].[Bots] DROP CONSTRAINT [DF_Bots_LoginPassword]
+GO
+/****** Object:  Table [dbo].[Websites]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[Websites]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[Users]
+GO
+/****** Object:  Table [dbo].[Jobs]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[Jobs]
+GO
+/****** Object:  Table [dbo].[Files]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[Files]
+GO
+/****** Object:  Table [dbo].[BotUsers]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[BotUsers]
+GO
+/****** Object:  Table [dbo].[Bots]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP TABLE [dbo].[Bots]
+GO
+USE [master]
+GO
+/****** Object:  Database [TeleBanel]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+DROP DATABASE [TeleBanel]
+GO
+/****** Object:  Database [TeleBanel]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+CREATE DATABASE [TeleBanel]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'TeleBanel', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\TeleBanel.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'TeleBanel_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\TeleBanel_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [TeleBanel] SET COMPATIBILITY_LEVEL = 130
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [TeleBanel].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [TeleBanel] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [TeleBanel] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [TeleBanel] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [TeleBanel] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [TeleBanel] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [TeleBanel] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [TeleBanel] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [TeleBanel] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [TeleBanel] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [TeleBanel] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [TeleBanel] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [TeleBanel] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [TeleBanel] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [TeleBanel] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [TeleBanel] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [TeleBanel] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [TeleBanel] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [TeleBanel] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [TeleBanel] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [TeleBanel] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [TeleBanel] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [TeleBanel] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [TeleBanel] SET RECOVERY FULL 
+GO
+ALTER DATABASE [TeleBanel] SET  MULTI_USER 
+GO
+ALTER DATABASE [TeleBanel] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [TeleBanel] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [TeleBanel] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [TeleBanel] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [TeleBanel] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'TeleBanel', N'ON'
+GO
+ALTER DATABASE [TeleBanel] SET QUERY_STORE = OFF
+GO
+USE [TeleBanel]
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET MAXDOP = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET LEGACY_CARDINALITY_ESTIMATION = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET PARAMETER_SNIFFING = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
+GO
+USE [TeleBanel]
+GO
+/****** Object:  Table [dbo].[Bots]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Bots](
+	[Username] [varchar](50) NOT NULL,
+	[DisplayName] [nvarchar](100) NULL,
+	[LoginPassword] [int] NOT NULL,
+	[Token] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Bots] PRIMARY KEY CLUSTERED 
+(
+	[Username] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[BotUsers]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BotUsers](
+	[UserId] [int] NOT NULL,
+	[BotUsername] [varchar](50) NOT NULL,
+	[LastLoginDate] [datetime] NOT NULL,
+	[Culture] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_BotUsers] PRIMARY KEY CLUSTERED 
+(
+	[BotUsername] ASC,
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Files]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Files](
+	[Id] [int] NOT NULL,
+	[Data] [varbinary](max) NULL,
+ CONSTRAINT [PK_Files] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Jobs]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Jobs](
+	[BotUsername] [varchar](50) NOT NULL,
+	[JobId] [nvarchar](100) NOT NULL,
+	[Title] [nvarchar](max) NULL,
+	[Image] [int] NULL,
+ CONSTRAINT [PK_Jobs] PRIMARY KEY CLUSTERED 
+(
+	[BotUsername] ASC,
+	[JobId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [int] NOT NULL,
+	[Username] [nvarchar](100) NOT NULL,
+	[FirstName] [nvarchar](100) NULL,
+	[LastName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Websites]    Script Date: 04/06/1396 01:04:38 ق.ظ ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Websites](
+	[BotUsername] [varchar](50) NOT NULL,
+	[SiteName] [varchar](50) NOT NULL,
+	[Url] [varchar](2000) NULL,
+	[About] [nvarchar](max) NULL,
+	[Title] [nvarchar](max) NULL,
+	[ContactEmail] [varchar](50) NULL,
+	[FeedbackEmail] [varchar](50) NULL,
+	[ContactPhone] [varchar](20) NULL,
+	[TelegramUrl] [varchar](50) NULL,
+	[InstagramUrl] [varchar](50) NULL,
+	[FacebookUrl] [varchar](50) NULL,
+	[GooglePlusUrl] [varchar](50) NULL,
+	[TwitterUrl] [varchar](50) NULL,
+	[LinkedInUrl] [varchar](50) NULL,
+	[FlickrUrl] [varchar](50) NULL,
+	[Logo] [int] NULL,
+ CONSTRAINT [PK_Websites] PRIMARY KEY CLUSTERED 
+(
+	[BotUsername] ASC,
+	[SiteName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+ALTER TABLE [dbo].[Bots] ADD  CONSTRAINT [DF_Bots_LoginPassword]  DEFAULT ((8118)) FOR [LoginPassword]
+GO
+ALTER TABLE [dbo].[BotUsers] ADD  CONSTRAINT [DF_BotUsers_LastLoginDate]  DEFAULT (getdate()) FOR [LastLoginDate]
+GO
+ALTER TABLE [dbo].[BotUsers] ADD  CONSTRAINT [DF_BotUsers_Culture]  DEFAULT ('en') FOR [Culture]
+GO
+ALTER TABLE [dbo].[BotUsers]  WITH CHECK ADD  CONSTRAINT [FK_BotUsers_Bots] FOREIGN KEY([BotUsername])
+REFERENCES [dbo].[Bots] ([Username])
+GO
+ALTER TABLE [dbo].[BotUsers] CHECK CONSTRAINT [FK_BotUsers_Bots]
+GO
+ALTER TABLE [dbo].[BotUsers]  WITH CHECK ADD  CONSTRAINT [FK_BotUsers_Users] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[BotUsers] CHECK CONSTRAINT [FK_BotUsers_Users]
+GO
+ALTER TABLE [dbo].[Jobs]  WITH CHECK ADD  CONSTRAINT [FK_Jobs_Bots] FOREIGN KEY([BotUsername])
+REFERENCES [dbo].[Bots] ([Username])
+GO
+ALTER TABLE [dbo].[Jobs] CHECK CONSTRAINT [FK_Jobs_Bots]
+GO
+ALTER TABLE [dbo].[Jobs]  WITH CHECK ADD  CONSTRAINT [FK_Jobs_Files] FOREIGN KEY([Image])
+REFERENCES [dbo].[Files] ([Id])
+GO
+ALTER TABLE [dbo].[Jobs] CHECK CONSTRAINT [FK_Jobs_Files]
+GO
+ALTER TABLE [dbo].[Websites]  WITH CHECK ADD  CONSTRAINT [FK_Websites_Bots] FOREIGN KEY([BotUsername])
+REFERENCES [dbo].[Bots] ([Username])
+GO
+ALTER TABLE [dbo].[Websites] CHECK CONSTRAINT [FK_Websites_Bots]
+GO
+ALTER TABLE [dbo].[Websites]  WITH CHECK ADD  CONSTRAINT [FK_Websites_Files] FOREIGN KEY([Logo])
+REFERENCES [dbo].[Files] ([Id])
+GO
+ALTER TABLE [dbo].[Websites] CHECK CONSTRAINT [FK_Websites_Files]
+GO
+USE [master]
+GO
+ALTER DATABASE [TeleBanel] SET  READ_WRITE 
+GO
