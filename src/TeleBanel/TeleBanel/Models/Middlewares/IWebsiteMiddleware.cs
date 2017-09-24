@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TeleBanel.Models
+﻿namespace TeleBanel.Models.Middlewares
 {
-    public interface IWebsite
+    public interface IWebsiteMiddleware
     {
         string SiteName { get; set; }
         string Url { get; set; }

@@ -168,8 +168,8 @@
   <data name="PleaseWait" xml:space="preserve">
     <value>Please wait . . . </value>
   </data>
-  <data name="Portfolio" xml:space="preserve">
-    <value>Portfolio</value>
+  <data name="Portfolios" xml:space="preserve">
+    <value>Portfolios</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
@@ -182,6 +182,9 @@
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
   </data>
   <data name="VisitWebsite" xml:space="preserve">
     <value>Visit Website</value>

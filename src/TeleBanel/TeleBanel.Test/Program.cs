@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using TeleBanel.Test.MiddlewareModels;
 
 namespace TeleBanel.Test
 {
@@ -9,10 +11,28 @@ namespace TeleBanel.Test
             Console.WriteLine("Welcome to TeleBanel (Telegram Bot Panel)");
             Console.WriteLine("Connecting to telegram server...");
 
+            var myWebsite = new WebsiteMiddleware()
+            {
+                SiteName = "Test.com",
+                Url = "https://xomorod.com",
+                Title = "Welcome Test Website",
+                About = "This is a Test about!",
+                ContactEmail = "contact@test.com",
+                ContactPhone = "+98-914-914-9202",
+                FacebookUrl = "https://facebook.com/test",
+                FlickrUrl = null,
+                FeedbackEmail = "feedback@test.com",
+                GooglePlusUrl = null,
+                InstagramUrl = null,
+                LinkedInUrl = null,
+                Logo = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\Resources\logo.png")
+            };
+
             var bot =
-                new BotManager("414286832:AAE-VQpu32juCfeOWLX33SDnyUZ_xHdfkT0", "8", "https://xomorod.com")
+                new BotManager("414286832:AAE-VQpu32juCfeOWLX33SDnyUZ_xHdfkT0", "8", myWebsite)
                 {
-                    JobManager = new JobManager()
+                    JobManager = new JobMiddleware(),
+                    InboxManager = new InboxMiddleware()
                 }; // TestForSelfBot
             bot.StartListening();
 

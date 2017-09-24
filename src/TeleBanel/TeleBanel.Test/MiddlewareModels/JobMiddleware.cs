@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using TeleBanel.Models;
+using TeleBanel.Models.Middlewares;
 
-namespace TeleBanel.Test
+namespace TeleBanel.Test.MiddlewareModels
 {
-    public class JobManager : IJob
+    public class JobMiddleware : IJobMiddleware
     {
         public Job GetJob(string id)
         {

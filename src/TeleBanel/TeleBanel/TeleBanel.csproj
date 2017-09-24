@@ -1,26 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="13.1.0" />
+    <PackageReference Include="Telegram.Bot" Version="13.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Localization.Designer.cs">
-      <DependentUpon>Localization.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Localization.fa.resx">
-      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Localization.resx">
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>

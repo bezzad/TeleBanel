@@ -11,13 +11,13 @@ namespace TeleBanel.Models
         public string UserName { get; set; }
         public int Id { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public LanguageCultures LanguageCulture { get; set; } = LanguageCultures.En;
+        public string Language { get; set; } = "En";
         public bool IsAuthenticated { get; set; } = false;
 
         [JsonIgnore]
         internal string Password { get; set; } = "";
         [JsonIgnore]
-        public CultureInfo Culture => new CultureInfo(LanguageCulture.ToString());
+        public CultureInfo Culture => new CultureInfo(Language);
 
 
         public static UserWrapper Factory(Telegram.Bot.Types.User telUser)

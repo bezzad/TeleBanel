@@ -1,6 +1,6 @@
-﻿namespace TeleBanel.Models
+﻿namespace TeleBanel.Models.Middlewares
 {
-    public interface IJob
+    public interface IJobMiddleware
     {
         Job[] GetJobs();
         string[] GetJobsId();

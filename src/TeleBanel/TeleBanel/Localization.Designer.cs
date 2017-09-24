@@ -10,7 +10,6 @@
 
 namespace TeleBanel {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace TeleBanel {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TeleBanel.Localization", typeof(Localization).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TeleBanel.Localization", typeof(Localization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -215,11 +214,11 @@ namespace TeleBanel {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Portfolio.
+        ///   Looks up a localized string similar to Portfolios.
         /// </summary>
-        internal static string Portfolio {
+        internal static string Portfolios {
             get {
-                return ResourceManager.GetString("Portfolio", resourceCulture);
+                return ResourceManager.GetString("Portfolios", resourceCulture);
             }
         }
         
@@ -256,6 +255,15 @@ namespace TeleBanel {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         
