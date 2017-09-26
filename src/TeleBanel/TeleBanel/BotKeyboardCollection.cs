@@ -9,6 +9,7 @@ namespace TeleBanel
         public IReplyMarkup PasswordKeyboardInlineKeyboard { get; }
         public IReplyMarkup PortfolioKeyboardInlineKeyboard { get; }
         public IReplyMarkup AboutKeyboardInlineKeyboard { get; }
+        public IReplyMarkup CancelKeyboardInlineKeyboard { get; }
         public IReplyMarkup CommonReplyKeyboard { get; }
         public IReplyMarkup RegisterReplyKeyboard { get; }
 
@@ -20,6 +21,7 @@ namespace TeleBanel
             PasswordKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard());
             PortfolioKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(url));
             AboutKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard());
+            CancelKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetCancelKeyboardInlineKeyboard());
         }
 
         public KeyboardButton[][] GetCommonReplyKeyboard()
@@ -114,6 +116,18 @@ namespace TeleBanel
                 new InlineKeyboardButton[]
                 {
                     new InlineKeyboardCallbackButton(Emoji.HeavyCheckMark + " " +  Localization.Update, "About_Update"),
+                }
+            };
+
+            return inlineKeys;
+        }
+        public InlineKeyboardButton[][] GetCancelKeyboardInlineKeyboard()
+        {
+            var inlineKeys = new[]
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " +  Localization.Cancel, "Cancel"),
                 }
             };
 

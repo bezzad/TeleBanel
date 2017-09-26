@@ -62,14 +62,18 @@ namespace TeleBanel
 
         private async void Bot_OnCallbackQuery(object sender, Telegram.Bot.Args.CallbackQueryEventArgs e)
         {
-            LastWaitingQuery = e.CallbackQuery.Data.ToLower();
-            var userId = e.CallbackQuery.From.Id;
+            var coomand = e.CallbackQuery.Data.ToLower();
 
             if (UserAuthenticated(e.CallbackQuery.From)) // user authenticated
             {
-                if (LastWaitingQuery.StartsWith(InlinePrefixKeys.PortfolioKey))
+                if (coomand == Localization.Cancel)
+                {
+                    LastWaitingQuery = null;
+                    await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
+                }
+                if (coomand.StartsWith(InlinePrefixKeys.PortfolioKey))
                     GoNextPortfolioStep(e);
-                else if (LastWaitingQuery.StartsWith(InlinePrefixKeys.AboutKey))
+                else if (coomand.StartsWith(InlinePrefixKeys.AboutKey))
                     GoNextAboutStep(e);
                 else
                 {
@@ -83,9 +87,7 @@ namespace TeleBanel
                 await AsPassword(e);
         }
 
-
-
-        private async void Bot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
+        private async void Bot_OnMessage(object sender, MessageEventArgs e)
         {
             var userId = e.Message.From.Id;
             var command = e.Message.Text?.GetNetMessage();
@@ -96,7 +98,7 @@ namespace TeleBanel
                 await Bot.SendTextMessageAsync(e.Message.Chat.Id, Localization.InvalidRequest);
                 return;
             }
-            
+
 
             if (command == Localization.GetMyId.ToLower())
             {
@@ -118,10 +120,15 @@ namespace TeleBanel
                 }
                 else
                 {
-                    await Bot.SendTextMessageAsync(
-                        e.Message.Chat.Id,
-                        Localization.PleaseChooseYourOptionDoubleDot,
-                        replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                    if (LastWaitingQuery != null)
+                    {
+                        typeof(BotManager).GetMethod(LastWaitingQuery)?.Invoke(this, new object[] { e });
+                    }
+                    else
+                        await Bot.SendTextMessageAsync(
+                            e.Message.Chat.Id,
+                            Localization.PleaseChooseYourOptionDoubleDot,
+                            replyMarkup: KeyboardCollection.CommonReplyKeyboard);
                 }
             }
             else // RegisterReplyKeyboard
@@ -150,8 +157,7 @@ namespace TeleBanel
             }
         }
 
-
-        public async Task<bool> AsPassword(Telegram.Bot.Args.CallbackQueryEventArgs e)
+        public async Task<bool> AsPassword(CallbackQueryEventArgs e)
         {
             var userId = e.CallbackQuery.From.Id;
 
@@ -236,7 +242,7 @@ namespace TeleBanel
         }
 
 
-        public async void GoNextPortfolioStep(Telegram.Bot.Args.CallbackQueryEventArgs e)
+        public async void GoNextPortfolioStep(CallbackQueryEventArgs e)
         {
             var query = LastWaitingQuery.Replace(InlinePrefixKeys.PortfolioKey, "");
 
@@ -266,10 +272,18 @@ namespace TeleBanel
 
         private async void GoNextAboutStep(CallbackQueryEventArgs e)
         {
-            var query = LastWaitingQuery.Replace(InlinePrefixKeys.AboutKey, "");
-            if (query == "update")
+            if (LastWaitingQuery == null)
             {
-                await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Please enter new About text", true);
+                LastWaitingQuery = nameof(GoNextAboutStep);
+                await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Please enter new About and press Enter key.", true);
+                await Bot.EditMessageReplyMarkupAsync(e.CallbackQuery.Message.Chat.Id,
+                    e.CallbackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+            }
+            else
+            {
+                LastWaitingQuery = null;
+                WebsiteManager.About = e.CallbackQuery.Data;
+                await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "About successfully updated.", true);
             }
         }
 
