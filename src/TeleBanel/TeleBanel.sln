@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeleBanel.Test", "TeleBanel.Test\TeleBanel.Test.csproj", "{00C08B67-3E79-4502-AD84-4260E50F72E2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeleBanel", "TeleBanel\TeleBanel.csproj", "{C5FB2134-62F4-4C33-810E-405B3896961D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ACB9229E-8FD1-438C-B517-3FE638B7D6C2}"
 	ProjectSection(SolutionItems) = preProject
 		DatabaseGeneratorScript.sql = DatabaseGeneratorScript.sql
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBanel", "TeleBanel\TeleBanel.csproj", "{D0709CDA-EEDB-4C96-BA34-D081F15D5ABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeleBanel.Test", "TeleBanel.Test\TeleBanel.Test.csproj", "{9A545C13-7C7F-4067-9BC3-FDE3315C6FC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +18,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00C08B67-3E79-4502-AD84-4260E50F72E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00C08B67-3E79-4502-AD84-4260E50F72E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00C08B67-3E79-4502-AD84-4260E50F72E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00C08B67-3E79-4502-AD84-4260E50F72E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5FB2134-62F4-4C33-810E-405B3896961D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5FB2134-62F4-4C33-810E-405B3896961D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5FB2134-62F4-4C33-810E-405B3896961D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5FB2134-62F4-4C33-810E-405B3896961D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0709CDA-EEDB-4C96-BA34-D081F15D5ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0709CDA-EEDB-4C96-BA34-D081F15D5ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0709CDA-EEDB-4C96-BA34-D081F15D5ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0709CDA-EEDB-4C96-BA34-D081F15D5ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A545C13-7C7F-4067-9BC3-FDE3315C6FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A545C13-7C7F-4067-9BC3-FDE3315C6FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A545C13-7C7F-4067-9BC3-FDE3315C6FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A545C13-7C7F-4067-9BC3-FDE3315C6FC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

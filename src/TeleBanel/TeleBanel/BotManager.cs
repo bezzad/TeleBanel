@@ -16,7 +16,6 @@ namespace TeleBanel
     {
         #region Properties
 
-        protected string LastWaitingQuery { get; set; } = string.Empty;
         protected string BotApiPassword { get; set; }
         public string BotApiKey { get; set; }
         public Dictionary<int, UserWrapper> Accounts { get; set; }
@@ -48,7 +47,7 @@ namespace TeleBanel
 
         #region Methods
 
-        public async void StartListening()
+        public async Task StartListeningAsync()
         {
             Bot = new TelegramBotClient(BotApiKey);
             Bot.StartReceiving();
@@ -63,18 +62,18 @@ namespace TeleBanel
         private async void Bot_OnCallbackQuery(object sender, Telegram.Bot.Args.CallbackQueryEventArgs e)
         {
             var coomand = e.CallbackQuery.Data.ToLower();
-
-            if (UserAuthenticated(e.CallbackQuery.From)) // user authenticated
+            
+            if (UserAuthenticated(e.CallbackQuery.From, out UserWrapper user)) // user authenticated
             {
-                if (coomand == Localization.Cancel)
+                if (coomand == Localization.Cancel.ToLower())
                 {
-                    LastWaitingQuery = null;
+                    user.LastWaitingQuery = null;
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                 }
                 if (coomand.StartsWith(InlinePrefixKeys.PortfolioKey))
-                    GoNextPortfolioStep(e);
+                    GoNextPortfolioStep(e, user);
                 else if (coomand.StartsWith(InlinePrefixKeys.AboutKey))
-                    GoNextAboutStep(e);
+                    GoNextAboutStep(e, user);
                 else
                 {
                     await Bot.SendTextMessageAsync(
@@ -104,7 +103,7 @@ namespace TeleBanel
             {
                 await Bot.SendTextMessageAsync(userId, $"{e.Message.From.FirstName} {e.Message.From.LastName}, ID: {userId}");
             }
-            else if (UserAuthenticated(e.Message.From)) // CommonReplyKeyboard
+            else if (UserAuthenticated(e.Message.From, out UserWrapper user)) // CommonReplyKeyboard
             {
                 if (command == Localization.Portfolios.ToLower())
                 {
@@ -120,9 +119,11 @@ namespace TeleBanel
                 }
                 else
                 {
-                    if (LastWaitingQuery != null)
+                    if (user.LastWaitingQuery != null)
                     {
-                        typeof(BotManager).GetMethod(LastWaitingQuery)?.Invoke(this, new object[] { e });
+                        var t = typeof(BotManager);
+                        var m = t.GetMethod(user.LastWaitingQuery);
+                        m?.Invoke(this, new object[] { e, user });
                     }
                     else
                         await Bot.SendTextMessageAsync(
@@ -221,10 +222,12 @@ namespace TeleBanel
 
             return true;
         }
-        public bool UserAuthenticated(User user)
+        public bool UserAuthenticated(User user, out UserWrapper userWrapper)
         {
             if (!Accounts.ContainsKey(user.Id))
                 Accounts[user.Id] = UserWrapper.Factory(user);
+
+            userWrapper = Accounts[user.Id];
 
             return Accounts[user.Id].IsAuthenticated;
         }
@@ -242,9 +245,9 @@ namespace TeleBanel
         }
 
 
-        public async void GoNextPortfolioStep(CallbackQueryEventArgs e)
+        public async void GoNextPortfolioStep(CallbackQueryEventArgs e, UserWrapper user)
         {
-            var query = LastWaitingQuery.Replace(InlinePrefixKeys.PortfolioKey, "");
+            var query = e.CallbackQuery.Data.ToLower().Replace(InlinePrefixKeys.PortfolioKey, "");
 
             switch (query)
             {
@@ -270,18 +273,18 @@ namespace TeleBanel
             }
         }
 
-        private async void GoNextAboutStep(CallbackQueryEventArgs e)
+        public async void GoNextAboutStep(CallbackQueryEventArgs e, UserWrapper user)
         {
-            if (LastWaitingQuery == null)
+            if (string.IsNullOrEmpty(user.LastWaitingQuery))
             {
-                LastWaitingQuery = nameof(GoNextAboutStep);
+                user.LastWaitingQuery = nameof(GoNextAboutStep);
                 await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Please enter new About and press Enter key.", true);
                 await Bot.EditMessageReplyMarkupAsync(e.CallbackQuery.Message.Chat.Id,
                     e.CallbackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
             }
             else
             {
-                LastWaitingQuery = null;
+                user.LastWaitingQuery = null;
                 WebsiteManager.About = e.CallbackQuery.Data;
                 await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "About successfully updated.", true);
             }

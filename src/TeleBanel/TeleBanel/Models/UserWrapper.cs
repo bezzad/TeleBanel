@@ -13,6 +13,7 @@ namespace TeleBanel.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public string Language { get; set; } = "En";
         public bool IsAuthenticated { get; set; } = false;
+        public string LastWaitingQuery { get; set; } = null;
 
         [JsonIgnore]
         internal string Password { get; set; } = "";

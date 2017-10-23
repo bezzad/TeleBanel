@@ -1,8 +1,6 @@
-﻿using TeleBanel.Models.Middlewares;
-
-namespace TeleBanel.Test.MiddlewareModels
+﻿namespace TeleBanel.Test.MiddlewareModels
 {
-    public class WebsiteMiddleware: IWebsiteMiddleware
+    public class WebsiteMiddleware: TeleBanel.Models.Middlewares.IWebsiteMiddleware
     {
         public string SiteName { get; set; }
         public string Url { get; set; }

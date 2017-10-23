@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TeleBanel.Test.MiddlewareModels;
 
 namespace TeleBanel.Test
@@ -25,7 +24,7 @@ namespace TeleBanel.Test
                 GooglePlusUrl = null,
                 InstagramUrl = null,
                 LinkedInUrl = null,
-                Logo = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\Resources\logo.png")
+                Logo = Properties.Resources.logo.ToByte()
             };
 
             var bot =
@@ -34,7 +33,8 @@ namespace TeleBanel.Test
                     JobManager = new JobMiddleware(),
                     InboxManager = new InboxMiddleware()
                 }; // TestForSelfBot
-            bot.StartListening();
+
+            bot.StartListeningAsync().Wait();
 
             Console.Read();
         }
