@@ -92,14 +92,14 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.HeavyPlusSign + " " + Localization.AddJob, "Portfolio_AddJob"),
+                    new InlineKeyboardCallbackButton(Emoji.NEWButton + " " + Localization.AddJob, "Portfolio_AddJob"),
                     new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ShowJob, "Portfolio_ShowJob")
 
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.HeavyCheckMark + " " +  Localization.EditJob, "Portfolio_EditJob"),
-                    new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " +  Localization.DeleteJob, "Portfolio_DeleteJob")
+                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " +  Localization.EditJob, "Portfolio_EditJob"),
+                    new InlineKeyboardCallbackButton(Emoji.CrossMark + " " +  Localization.DeleteJob, "Portfolio_DeleteJob")
                 },
                 new InlineKeyboardButton[]
                 {
@@ -115,7 +115,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.HeavyCheckMark + " " +  Localization.Update, "About_Update"),
+                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " +  Localization.Update, "About_Update"),
                 }
             };
 
@@ -127,7 +127,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " +  Localization.Cancel, "Cancel"),
+                    new InlineKeyboardCallbackButton(Emoji.CrossMarkButton + " " +  Localization.Cancel, "Cancel"),
                 }
             };
 

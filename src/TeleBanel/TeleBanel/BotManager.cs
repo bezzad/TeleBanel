@@ -70,7 +70,7 @@ namespace TeleBanel
                     user.LastWaitingQuery = null;
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                 }
-                if (coomand.StartsWith(InlinePrefixKeys.PortfolioKey))
+                else if (coomand.StartsWith(InlinePrefixKeys.PortfolioKey))
                     GoNextPortfolioStep(e, user);
                 else if (coomand.StartsWith(InlinePrefixKeys.AboutKey))
                     GoNextAboutStep(e, user);
@@ -90,7 +90,7 @@ namespace TeleBanel
         {
             var userId = e.Message.From.Id;
             var command = e.Message.Text?.GetNetMessage();
-
+            
             if (e.Message.Chat.Type != ChatType.Private || e.Message.Type != MessageType.TextMessage ||
                 string.IsNullOrEmpty(command))
             {
