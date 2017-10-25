@@ -13,7 +13,7 @@ namespace TeleBanel.Test.MiddlewareModels
             {
                 Id = id,
                 Title = "عنوان عکس " + id,
-                Image = File.ReadAllBytes(Directory.GetCurrentDirectory() + @"\Resources\TestImage.JPG")
+                Image = Properties.Resources.TestImage.ToByte()
             };
         }
 

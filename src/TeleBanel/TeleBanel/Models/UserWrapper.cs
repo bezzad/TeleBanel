@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Telegram.Bot.Types;
 
 namespace TeleBanel.Models
 {
@@ -13,13 +14,13 @@ namespace TeleBanel.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public string Language { get; set; } = "En";
         public bool IsAuthenticated { get; set; } = false;
-        public string LastWaitingQuery { get; set; } = null;
+        public Message LastMessageQuery { get; set; } = null;
+        public CallbackQuery LastCallBackQuery { get; set; } = null;
 
         [JsonIgnore]
         internal string Password { get; set; } = "";
         [JsonIgnore]
         public CultureInfo Culture => new CultureInfo(Language);
-
 
         public static UserWrapper Factory(Telegram.Bot.Types.User telUser)
         {
