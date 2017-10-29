@@ -99,8 +99,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BotHelper.cs" />
     <Compile Include="BotKeyboardCollection.cs" />
     <Compile Include="BotManager.cs" />
+    <Compile Include="BotManager.Missions.cs" />
     <Compile Include="Emoji.cs" />
     <Compile Include="InlinePrefixKeys.cs" />
     <Compile Include="Localization.Designer.cs">
@@ -121,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="BotManager.Properties.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
