@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TeleBanel.Helper;
 using TeleBanel.Models;
 using TeleBanel.Models.Middlewares;
+using TeleBanel.Properties;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -69,6 +71,10 @@ namespace TeleBanel
                 {
                     GoNextAboutStep(user);
                 }
+                else if (command.StartsWith(InlinePrefixKeys.LogoKey))
+                {
+                    GoNextLogoStep(user);
+                }
                 else
                 {
                     await Bot.SendTextMessageAsync(
@@ -113,6 +119,13 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
                         replyMarkup: KeyboardCollection.AboutKeyboardInlineKeyboard);
+                }
+                else if (command == Localization.Logo.ToLower())
+                {
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.Logo + ": \n\r",
+                        replyMarkup: KeyboardCollection.AboutKeyboardInlineKeyboard);
+
                 }
                 else
                 {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TeleBanel.Helper;
 using TeleBanel.Models;
+using TeleBanel.Properties;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 
@@ -37,6 +39,30 @@ namespace TeleBanel
         }
 
         public async void GoNextAboutStep(UserWrapper user)
+        {
+            if (user.LastCallBackQuery == null)
+                return;
+
+            if (user.WaitingMessageQuery == null)
+            {
+                user.WaitingMessageQuery = nameof(GoNextAboutStep);
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please enter new About and press Enter key.", true);
+                await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
+                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+            }
+            else
+            {
+                WebsiteManager.About = user.LastMessageQuery.Text;
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "About successfully updated.", true);
+                await Bot.EditMessageTextAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId,
+                    Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
+                    ParseMode.Default, false, KeyboardCollection.AboutKeyboardInlineKeyboard);
+
+                user.WaitingMessageQuery = null; // waiting method called and then clear buffer
+            }
+        }
+
+        public async void GoNextLogoStep(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;

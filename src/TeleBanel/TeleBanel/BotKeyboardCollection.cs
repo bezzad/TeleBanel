@@ -1,4 +1,6 @@
-﻿using Telegram.Bot.Types;
+﻿using TeleBanel.Helper;
+using TeleBanel.Properties;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -9,6 +11,7 @@ namespace TeleBanel
         public IReplyMarkup PasswordKeyboardInlineKeyboard { get; }
         public IReplyMarkup PortfolioKeyboardInlineKeyboard { get; }
         public IReplyMarkup AboutKeyboardInlineKeyboard { get; }
+        public IReplyMarkup LogoKeyboardInlineKeyboard { get; }
         public IReplyMarkup CancelKeyboardInlineKeyboard { get; }
         public IReplyMarkup CommonReplyKeyboard { get; }
         public IReplyMarkup RegisterReplyKeyboard { get; }
@@ -21,6 +24,7 @@ namespace TeleBanel
             PasswordKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard());
             PortfolioKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(url));
             AboutKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard());
+            LogoKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetLogoKeyboardInlineKeyboard());
             CancelKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetCancelKeyboardInlineKeyboard());
         }
 
@@ -116,6 +120,18 @@ namespace TeleBanel
                 new InlineKeyboardButton[]
                 {
                     new InlineKeyboardCallbackButton(Emoji.Crayon + " " +  Localization.Update, "About_Update"),
+                }
+            };
+
+            return inlineKeys;
+        }
+        public InlineKeyboardButton[][] GetLogoKeyboardInlineKeyboard()
+        {
+            var inlineKeys = new[]
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " +  Localization.Update, "Logo_Update"),
                 }
             };
 

@@ -99,13 +99,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BotHelper.cs" />
+    <Compile Include="Helper\BotHelper.cs" />
     <Compile Include="BotKeyboardCollection.cs" />
     <Compile Include="BotManager.cs" />
     <Compile Include="BotManager.Missions.cs" />
-    <Compile Include="Emoji.cs" />
-    <Compile Include="InlinePrefixKeys.cs" />
-    <Compile Include="Localization.Designer.cs">
+    <Compile Include="Helper\Emoji.cs" />
+    <Compile Include="Helper\InlinePrefixKeys.cs" />
+    <Compile Include="Properties\Localization.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.resx</DependentUpon>
@@ -119,7 +119,7 @@
     <Compile Include="Models\Middlewares\IWebsiteMiddleware.cs" />
     <Compile Include="Models\UserWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringHelper.cs" />
+    <Compile Include="Helper\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -127,7 +127,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Localization.resx">
+    <EmbeddedResource Include="Properties\Localization.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -1,4 +1,4 @@
-﻿namespace TeleBanel
+﻿namespace TeleBanel.Helper
 {
     public static class InlinePrefixKeys
     {

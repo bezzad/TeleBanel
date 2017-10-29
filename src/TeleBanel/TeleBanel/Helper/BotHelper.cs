@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using TeleBanel.Models;
+using TeleBanel.Properties;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-
-namespace TeleBanel
+namespace TeleBanel.Helper
 {
     public static class BotHelper
     {

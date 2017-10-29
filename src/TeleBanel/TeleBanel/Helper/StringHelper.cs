@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace TeleBanel
+namespace TeleBanel.Helper
 {
     public static class StringHelper
     {
