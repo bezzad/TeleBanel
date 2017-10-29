@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using TeleBanel.Helper;
 using TeleBanel.Models;
@@ -26,7 +27,7 @@ namespace TeleBanel
         }
 
         #endregion
-        
+
 
         public async Task StartListeningAsync()
         {
@@ -50,7 +51,7 @@ namespace TeleBanel
         }
 
 
-        private async void Bot_OnCallbackQuery(object sender, Telegram.Bot.Args.CallbackQueryEventArgs e)
+        private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
             var command = e.CallbackQuery.Data.ToLower();
 
@@ -92,8 +93,7 @@ namespace TeleBanel
             var userId = e.Message.From.Id;
             var command = e.Message.Text?.GetNetMessage();
 
-            if (e.Message.Chat.Type != ChatType.Private || e.Message.Type != MessageType.TextMessage ||
-                string.IsNullOrEmpty(command))
+            if (e.Message.Chat.Type != ChatType.Private)
             {
                 await Bot.SendTextMessageAsync(e.Message.Chat.Id, Localization.InvalidRequest);
                 return;
@@ -122,10 +122,13 @@ namespace TeleBanel
                 }
                 else if (command == Localization.Logo.ToLower())
                 {
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.Logo + ": \n\r",
-                        replyMarkup: KeyboardCollection.AboutKeyboardInlineKeyboard);
-
+                    using (var stream = new MemoryStream(WebsiteManager.Logo))
+                    {
+                        await Bot.SendPhotoAsync(e.Message.Chat.Id,
+                            photo: new FileToSend("logo", stream),
+                            caption: Localization.Logo,
+                            replyMarkup: KeyboardCollection.LogoKeyboardInlineKeyboard);
+                    }
                 }
                 else
                 {
@@ -155,7 +158,7 @@ namespace TeleBanel
                 {
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.Password,
+                        $"{Emoji.LightBulb} {Localization.Password}: ",
                         replyMarkup: KeyboardCollection.PasswordKeyboardInlineKeyboard);
                 }
                 else

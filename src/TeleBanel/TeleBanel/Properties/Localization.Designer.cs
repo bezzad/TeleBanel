@@ -97,6 +97,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Logo.
+        /// </summary>
+        internal static string ChangeLogo {
+            get {
+                return ResourceManager.GetString("ChangeLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Job.
         /// </summary>
         internal static string DeleteJob {

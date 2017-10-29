@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TeleBanel.Helper;
 using TeleBanel.Models;
 using TeleBanel.Properties;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace TeleBanel
@@ -69,20 +71,25 @@ namespace TeleBanel
 
             if (user.WaitingMessageQuery == null)
             {
-                user.WaitingMessageQuery = nameof(GoNextAboutStep);
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please enter new About and press Enter key.", true);
+                user.WaitingMessageQuery = nameof(GoNextLogoStep);
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
             }
+            else if (user.LastMessageQuery.Photo.Any())
+            {
+                using (var mem = new MemoryStream())
+                {
+                    var file = await Bot.GetFileAsync(user.LastMessageQuery.Photo.Last().FileId, mem);
+                    WebsiteManager.Logo = mem.ToByte();
+                    await Bot.DeleteMessageAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId);
+                    await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, "The logo changed successfully.");
+                }
+                user.WaitingMessageQuery = null; // waiting method called and then clear buffer
+            }
             else
             {
-                WebsiteManager.About = user.LastMessageQuery.Text;
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "About successfully updated.", true);
-                await Bot.EditMessageTextAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId,
-                    Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
-                    ParseMode.Default, false, KeyboardCollection.AboutKeyboardInlineKeyboard);
-
-                user.WaitingMessageQuery = null; // waiting method called and then clear buffer
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
             }
         }
 
@@ -145,7 +152,7 @@ namespace TeleBanel
             }
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
-                Localization.Password + ": " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
+                $"{Emoji.LightBulb} {Localization.Password}: " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
                 ParseMode.Default, false, KeyboardCollection.PasswordKeyboardInlineKeyboard);
 
             return true;

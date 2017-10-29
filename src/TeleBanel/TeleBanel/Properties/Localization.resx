@@ -129,6 +129,9 @@
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Change Language</value>
   </data>
+  <data name="ChangeLogo" xml:space="preserve">
+    <value>Change Logo</value>
+  </data>
   <data name="DeleteJob" xml:space="preserve">
     <value>Delete Job</value>
   </data>

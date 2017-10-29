@@ -9,7 +9,7 @@ namespace TeleBanel.Helper
 {
     public static class BotHelper
     {
-        public static async Task SendPhotoAsync(this ITelegramBotClient bot, UserWrapper user,  
+        public static async Task SendPhotoAsync(this ITelegramBotClient bot, UserWrapper user,
                                                     string caption, string imageName, byte[] imageBytes)
         {
             var msg = await bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, Localization.PleaseWait);
@@ -20,6 +20,15 @@ namespace TeleBanel.Helper
             }
 
             await bot.DeleteMessageAsync(msg.Chat.Id, msg.MessageId);
+        }
+
+        public static byte[] ToByte(this Stream input)
+        {
+            using (var ms = new MemoryStream())
+            {
+                input.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }

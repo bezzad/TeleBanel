@@ -40,7 +40,7 @@ namespace TeleBanel
                 new[]
                 {
                     new KeyboardButton(Emoji.Information + " " + Localization.About),
-                    new KeyboardButton(Emoji.LadyBeetle + " " + Localization.Logo),
+                    new KeyboardButton(Emoji.JapaneseSymbolForBeginner + " " + Localization.Logo),
                     new KeyboardButton(Emoji.Link + " " + Localization.SocialLinks)
                 }
             };
@@ -131,7 +131,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " +  Localization.Update, "Logo_Update"),
+                    new InlineKeyboardCallbackButton(Emoji.JapaneseSymbolForBeginner + " " +  Localization.ChangeLogo, "Logo_Update"),
                 }
             };
 
