@@ -19,11 +19,12 @@ namespace TeleBanel.Test
                 ContactEmail = "contact@test.com",
                 ContactPhone = "+98-914-914-9202",
                 FacebookUrl = "https://facebook.com/test",
-                FlickrUrl = null,
+                FlickerUrl = null,
                 FeedbackEmail = "feedback@test.com",
                 GooglePlusUrl = null,
                 InstagramUrl = null,
                 LinkedInUrl = null,
+                TelegramUrl= "https://telegram.me/dezirerobot",
                 Logo = Properties.Resources.logo.ToByte()
             };
 

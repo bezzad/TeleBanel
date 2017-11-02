@@ -70,6 +70,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Job.
         /// </summary>
         internal static string AddJob {
@@ -106,11 +115,38 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact Email.
+        /// </summary>
+        internal static string ContactEmail {
+            get {
+                return ResourceManager.GetString("ContactEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Phone.
+        /// </summary>
+        internal static string ContactPhone {
+            get {
+                return ResourceManager.GetString("ContactPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Job.
         /// </summary>
         internal static string DeleteJob {
             get {
                 return ResourceManager.GetString("DeleteJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -142,11 +178,47 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Facebook.
+        /// </summary>
+        internal static string Facebook {
+            get {
+                return ResourceManager.GetString("Facebook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback Email.
+        /// </summary>
+        internal static string FeedbackEmail {
+            get {
+                return ResourceManager.GetString("FeedbackEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flicker.
+        /// </summary>
+        internal static string Flicker {
+            get {
+                return ResourceManager.GetString("Flicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Get My ID.
         /// </summary>
         internal static string GetMyId {
             get {
                 return ResourceManager.GetString("GetMyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google+.
+        /// </summary>
+        internal static string GooglePlus {
+            get {
+                return ResourceManager.GetString("GooglePlus", resourceCulture);
             }
         }
         
@@ -169,6 +241,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Instagram.
+        /// </summary>
+        internal static string Instagram {
+            get {
+                return ResourceManager.GetString("Instagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid request.
         /// </summary>
         internal static string InvalidRequest {
@@ -183,6 +264,24 @@ namespace TeleBanel.Properties {
         internal static string Layout {
             get {
                 return ResourceManager.GetString("Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LinkedIn.
+        /// </summary>
+        internal static string LinkedIn {
+            get {
+                return ResourceManager.GetString("LinkedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Links.
+        /// </summary>
+        internal static string Links {
+            get {
+                return ResourceManager.GetString("Links", resourceCulture);
             }
         }
         
@@ -259,11 +358,11 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Social Links.
+        ///   Looks up a localized string similar to Site Name.
         /// </summary>
-        internal static string SocialLinks {
+        internal static string SiteName {
             get {
-                return ResourceManager.GetString("SocialLinks", resourceCulture);
+                return ResourceManager.GetString("SiteName", resourceCulture);
             }
         }
         
@@ -273,6 +372,24 @@ namespace TeleBanel.Properties {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram.
+        /// </summary>
+        internal static string Telegram {
+            get {
+                return ResourceManager.GetString("Telegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twitter.
+        /// </summary>
+        internal static string Twitter {
+            get {
+                return ResourceManager.GetString("Twitter", resourceCulture);
             }
         }
         
@@ -291,6 +408,15 @@ namespace TeleBanel.Properties {
         internal static string VisitWebsite {
             get {
                 return ResourceManager.GetString("VisitWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        internal static string Website {
+            get {
+                return ResourceManager.GetString("Website", resourceCulture);
             }
         }
     }

@@ -6,6 +6,8 @@ namespace TeleBanel.Helper
     {
         public static char[] EnglishLetters { get; } = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSWXYZ".ToCharArray();
         public static char[] NumericalLetters { get; } = "0123456789".ToCharArray();
+        public static string UriPattern { get; } = @"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$";
+
 
         public static string GetNetMessage(this string msg)
         {

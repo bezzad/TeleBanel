@@ -22,7 +22,7 @@ namespace TeleBanel
             Accounts = new Dictionary<int, UserWrapper>();
             BotApiKey = apiKey;
             BotApiPassword = botPassword;
-            KeyboardCollection = new BotKeyboardCollection(websiteInfo.Url);
+            KeyboardCollection = new BotKeyboardCollection(websiteInfo);
             WebsiteManager = websiteInfo;
         }
 
@@ -76,6 +76,10 @@ namespace TeleBanel
                 {
                     GoNextLogoStep(user);
                 }
+                else if (command.StartsWith(InlinePrefixKeys.LinksKey))
+                {
+                    GoNextLinksStep(user);
+                }
                 else
                 {
                     await Bot.SendTextMessageAsync(
@@ -87,6 +91,7 @@ namespace TeleBanel
             else // Before authenticate
                 await GoNextPasswordStep(e);
         }
+
 
         private async void Bot_OnMessage(object sender, MessageEventArgs e)
         {
@@ -129,6 +134,12 @@ namespace TeleBanel
                             caption: Localization.Logo,
                             replyMarkup: KeyboardCollection.LogoKeyboardInlineKeyboard);
                     }
+                }
+                else if (command == Localization.Links.ToLower())
+                {
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
+                        replyMarkup: KeyboardCollection.LinksboardInlineKeyboard);
                 }
                 else
                 {

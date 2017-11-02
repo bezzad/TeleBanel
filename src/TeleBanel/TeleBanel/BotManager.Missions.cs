@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TeleBanel.Helper;
 using TeleBanel.Models;
@@ -20,23 +21,23 @@ namespace TeleBanel
             switch (query)
             {
                 case "addjob":
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
                 case "showjob":
-                {
-                    var job = JobManager.GetJob(new Random().Next().ToString());
-                    await Bot.SendPhotoAsync(user, job.Title, job.Id, job.Image);
-                    break;
-                }
+                    {
+                        var job = JobManager.GetJob(new Random().Next().ToString());
+                        await Bot.SendPhotoAsync(user, job.Title, job.Id, job.Image);
+                        break;
+                    }
                 case "editjob":
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
                 case "deletejob":
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
             }
         }
 
@@ -45,7 +46,7 @@ namespace TeleBanel
             if (user.LastCallBackQuery == null)
                 return;
 
-            if (user.WaitingMessageQuery == null)
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextAboutStep))
             {
                 user.WaitingMessageQuery = nameof(GoNextAboutStep);
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please enter new About and press Enter key.", true);
@@ -69,7 +70,7 @@ namespace TeleBanel
             if (user.LastCallBackQuery == null)
                 return;
 
-            if (user.WaitingMessageQuery == null)
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextLogoStep))
             {
                 user.WaitingMessageQuery = nameof(GoNextLogoStep);
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
@@ -90,6 +91,50 @@ namespace TeleBanel
             else
             {
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
+            }
+        }
+
+        public async void GoNextLinksStep(UserWrapper user)
+        {
+            if (user.LastCallBackQuery == null)
+                return;
+
+            var linkName = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.LinksKey + "Edit", "");
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextLinksStep))
+            {
+                user.WaitingMessageQuery = nameof(GoNextLinksStep);
+
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id,
+                    $"Please enter new {linkName} link and press Enter key.", true);
+                user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
+                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+            }
+            else
+            {
+                if (Regex.IsMatch(user.LastMessageQuery.Text, StringHelper.UriPattern)
+                    && Uri.TryCreate(user.LastMessageQuery.Text, UriKind.RelativeOrAbsolute, out Uri uri)
+                    && (uri.Scheme == Uri.UriSchemeHttp
+                        || uri.Scheme == Uri.UriSchemeHttps
+                        || uri.Scheme == Uri.UriSchemeFtp
+                        || uri.Scheme == Uri.UriSchemeMailto))
+                {
+                    var prop = WebsiteManager.GetType()
+                        .GetProperties()
+                        .FirstOrDefault(p => p.Name.StartsWith(linkName));
+
+                    prop?.SetValue(WebsiteManager, uri.ToString());
+
+                    await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, "The link updated.");
+                    user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
+                        user.LastCallBackQuery.Message.MessageId, KeyboardCollection.LinksboardInlineKeyboard);
+
+                    user.WaitingMessageQuery = null; // waiting method called and then clear buffer
+                }
+                else
+                {
+                    await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
+                        "Please enter just Uri format like example: http://sampleuri.com");
+                }
             }
         }
 

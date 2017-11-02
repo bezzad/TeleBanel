@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AddJob" xml:space="preserve">
     <value>Add Job</value>
   </data>
@@ -132,8 +135,17 @@
   <data name="ChangeLogo" xml:space="preserve">
     <value>Change Logo</value>
   </data>
+  <data name="ContactEmail" xml:space="preserve">
+    <value>Contact Email</value>
+  </data>
+  <data name="ContactPhone" xml:space="preserve">
+    <value>Contact Phone</value>
+  </data>
   <data name="DeleteJob" xml:space="preserve">
     <value>Delete Job</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="EditJob" xml:space="preserve">
     <value>Edit Job</value>
@@ -144,8 +156,20 @@
   <data name="EntryPasswordIsIncorrect" xml:space="preserve">
     <value>Password is incorrect</value>
   </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="FeedbackEmail" xml:space="preserve">
+    <value>Feedback Email</value>
+  </data>
+  <data name="Flicker" xml:space="preserve">
+    <value>Flicker</value>
+  </data>
   <data name="GetMyId" xml:space="preserve">
     <value>Get My ID</value>
+  </data>
+  <data name="GooglePlus" xml:space="preserve">
+    <value>Google+</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -153,11 +177,20 @@
   <data name="Inbox" xml:space="preserve">
     <value>Inbox</value>
   </data>
+  <data name="Instagram" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
   <data name="InvalidRequest" xml:space="preserve">
     <value>Invalid request</value>
   </data>
   <data name="Layout" xml:space="preserve">
     <value>Layout</value>
+  </data>
+  <data name="LinkedIn" xml:space="preserve">
+    <value>LinkedIn</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Links</value>
   </data>
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
@@ -183,16 +216,25 @@
   <data name="ShowJob" xml:space="preserve">
     <value>Show Job</value>
   </data>
-  <data name="SocialLinks" xml:space="preserve">
-    <value>Social Links</value>
+  <data name="SiteName" xml:space="preserve">
+    <value>Site Name</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="Telegram" xml:space="preserve">
+    <value>Telegram</value>
+  </data>
+  <data name="Twitter" xml:space="preserve">
+    <value>Twitter</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>
   <data name="VisitWebsite" xml:space="preserve">
     <value>Visit Website</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
   </data>
 </root>

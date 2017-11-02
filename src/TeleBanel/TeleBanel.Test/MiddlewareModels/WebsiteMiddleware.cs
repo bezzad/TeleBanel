@@ -15,7 +15,7 @@
         public string GooglePlusUrl { get; set; }
         public string TwitterUrl { get; set; }
         public string LinkedInUrl { get; set; }
-        public string FlickrUrl { get; set; }
+        public string FlickerUrl { get; set; }
         public byte[] Logo { get; set; }
     }
 }
