@@ -53,7 +53,7 @@ namespace TeleBanel
                 user.WaitingMessageQuery = nameof(GoNextAboutStep);
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, $"Please enter new {Localization.ResourceManager.GetString(propName)?.ToLower()} and press Enter key.", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
             }
             else
             {
@@ -77,7 +77,7 @@ namespace TeleBanel
                 user.WaitingMessageQuery = nameof(GoNextLogoStep);
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
             }
             else if (user.LastMessageQuery.Photo.Any())
             {
@@ -109,7 +109,7 @@ namespace TeleBanel
                 await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id,
                     $"Please enter new {linkName} link and press Enter key.", true);
                 user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
+                    user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
             }
             else
             {
@@ -128,7 +128,7 @@ namespace TeleBanel
 
                     await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, "The link updated.");
                     user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                        user.LastCallBackQuery.Message.MessageId, KeyboardCollection.LinksboardInlineKeyboard);
+                        user.LastCallBackQuery.Message.MessageId, KeyboardCollection.LinksInlineKeyboard);
 
                     user.WaitingMessageQuery = null; // waiting method called and then clear buffer
                 }
@@ -136,6 +136,23 @@ namespace TeleBanel
                 {
                     await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
                         "Please enter just Uri format like example: http://sampleuri.com");
+                }
+            }
+        }
+
+        public async void GoNextInboxStep(UserWrapper user)
+        {
+            if (user.LastCallBackQuery == null)
+                return;
+
+            var msgId = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.InboxKey + "Delete_", "");
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextInboxStep))
+            {
+                if (int.TryParse(msgId, out int id))
+                {
+                    InboxManager.DeleteMessage(id);
+                    await Bot.DeleteMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
+                        user.LastCallBackQuery.Message.MessageId);
                 }
             }
         }
@@ -200,7 +217,7 @@ namespace TeleBanel
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
                 $"{Emoji.LightBulb} {Localization.Password}: " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
-                ParseMode.Default, false, KeyboardCollection.PasswordKeyboardInlineKeyboard);
+                ParseMode.Default, false, KeyboardCollection.PasswordInlineKeyboard);
 
             return true;
         }

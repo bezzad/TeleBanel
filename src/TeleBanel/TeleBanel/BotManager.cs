@@ -80,6 +80,10 @@ namespace TeleBanel
                 {
                     GoNextLinksStep(user);
                 }
+                else if (command.StartsWith(InlinePrefixKeys.InboxKey))
+                {
+                    GoNextInboxStep(user);
+                }
                 else
                 {
                     await Bot.SendTextMessageAsync(
@@ -117,29 +121,29 @@ namespace TeleBanel
                 {
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.Portfolios,
-                        replyMarkup: KeyboardCollection.PortfolioKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.PortfolioInlineKeyboard);
                 }
                 else if (command == Localization.About.ToLower())
                 {
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
-                        replyMarkup: KeyboardCollection.AboutKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.AboutInlineKeyboard);
 
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.Title + ": \n\r" + (WebsiteManager.Title ?? "---"),
-                        replyMarkup: KeyboardCollection.TitleKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.TitleInlineKeyboard);
 
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.ContactEmail + ": \n\r" + (WebsiteManager.ContactEmail ?? "---"),
-                        replyMarkup: KeyboardCollection.ContactEmailKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.ContactEmailInlineKeyboard);
 
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.FeedbackEmail + ": \n\r" + (WebsiteManager.FeedbackEmail ?? "---"),
-                        replyMarkup: KeyboardCollection.FeedbackEmailKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.FeedbackEmailInlineKeyboard);
 
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.ContactPhone + ": \n\r" + (WebsiteManager.ContactPhone ?? "---"),
-                        replyMarkup: KeyboardCollection.ContactPhoneKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.ContactPhoneInlineKeyboard);
                 }
                 else if (command == Localization.Logo.ToLower())
                 {
@@ -148,14 +152,28 @@ namespace TeleBanel
                         await Bot.SendPhotoAsync(e.Message.Chat.Id,
                             photo: new FileToSend("logo", stream),
                             caption: Localization.Logo,
-                            replyMarkup: KeyboardCollection.LogoKeyboardInlineKeyboard);
+                            replyMarkup: KeyboardCollection.LogoInlineKeyboard);
                     }
                 }
                 else if (command == Localization.Links.ToLower())
                 {
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
-                        replyMarkup: KeyboardCollection.LinksboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.LinksInlineKeyboard);
+                }
+                else if (command == Localization.Inbox.ToLower())
+                {
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        $"{Emoji.SpeechBalloon + Emoji.SpeechBalloon}   Messages   {Emoji.SpeechBalloon + Emoji.SpeechBalloon}");
+
+                    foreach (var msg in InboxManager.GetMessages())
+                    {
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            $"{Emoji.Girl} {msg.Name}:    {msg.Subject}" +
+                            $"\n\r{Emoji.SpeechBalloon} {msg.Message}" +
+                            $"\n\r<a href='https://mail.google.com/mail/u/0/?view=cm&tf=0&to={msg.Email}&su=feedback+(via+{WebsiteManager.SiteName})&body=%0D%0A--%0D%0Avia+{WebsiteManager.SiteName}&bcc&cc&fs=1'>Reply {msg.Name}</a>", parseMode: ParseMode.Html,
+                            replyMarkup: KeyboardCollection.DeleteMessageInlineKeyboard(msg.Id));
+                    }
                 }
                 else
                 {
@@ -186,7 +204,7 @@ namespace TeleBanel
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         $"{Emoji.LightBulb} {Localization.Password}: ",
-                        replyMarkup: KeyboardCollection.PasswordKeyboardInlineKeyboard);
+                        replyMarkup: KeyboardCollection.PasswordInlineKeyboard);
                 }
                 else
                 {

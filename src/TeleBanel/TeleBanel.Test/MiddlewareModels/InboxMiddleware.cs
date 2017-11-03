@@ -1,56 +1,53 @@
-﻿using TeleBanel.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TeleBanel.Models;
 using TeleBanel.Models.Middlewares;
 
 namespace TeleBanel.Test.MiddlewareModels
 {
     public class InboxMiddleware : IInboxMiddleware
     {
-        public Inbox GetMessage(int id)
-        {
-            return new Inbox()
-            {
-                Id = id,
-                Email = "test@test.com",
-                Name = "test",
-                Subject = "test subject",
-                Message = $"Message id: {id}"
-            };
-        }
+        private IList<Inbox> Messages { get; set; }
 
-        public Inbox[] GetMessages()
+        public InboxMiddleware()
         {
-            return new Inbox[]
+            Messages = new List<Inbox>
             {
                 new Inbox()
                 {
                     Id = 1,
-                    Email = "test1@test.com",
-                    Name = "test1",
-                    Subject = "test subject 1",
-                    Message = "Message id: 1"
+                    Email = "One@test.com",
+                    Name = "Behzad",
+                    Subject = "Buy some thing",
+                    Message = "I have to buy the new project..."
                 },
                 new Inbox()
                 {
                     Id = 2,
-                    Email = "test2@test.com",
-                    Name = "test2",
-                    Subject = "test subject 2",
-                    Message = "Message id: 2"
+                    Email = "Two@test.com",
+                    Name = "Json",
+                    Subject = "Report bugs",
+                    Message = "Your website crashed when I press the subscribe button!"
                 },
                 new Inbox()
                 {
                     Id = 3,
-                    Email = "test3@test.com",
-                    Name = "test3",
-                    Subject = "test subject 3",
-                    Message = "Message id: 3"
+                    Email = "Three@test.com",
+                    Name = "David",
+                    Subject = "I love your page",
+                    Message = "Thanks a lot to sending this page :)"
                 }
             };
         }
 
-        public void SetMessage(Inbox msg)
+        public IList<Inbox> GetMessages()
         {
-            
+            return Messages;
+        }
+
+        public void DeleteMessage(int msgId)
+        {
+            Messages = Messages.Where(mbox => mbox.Id != msgId).ToList();
         }
     }
 }

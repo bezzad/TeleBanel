@@ -12,7 +12,7 @@ namespace TeleBanel.Test
 
             var myWebsite = new WebsiteMiddleware()
             {
-                SiteName = "Test.com",
+                SiteName = "Test Website",
                 Url = "https://xomorod.com",
                 Title = "Welcome Test Website",
                 About = "This is a Test about!",

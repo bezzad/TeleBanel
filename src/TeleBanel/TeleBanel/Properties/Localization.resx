@@ -141,6 +141,9 @@
   <data name="ContactPhone" xml:space="preserve">
     <value>Contact Phone</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="DeleteJob" xml:space="preserve">
     <value>Delete Job</value>
   </data>
