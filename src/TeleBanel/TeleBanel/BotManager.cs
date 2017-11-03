@@ -124,6 +124,22 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
                         replyMarkup: KeyboardCollection.AboutKeyboardInlineKeyboard);
+
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.Title + ": \n\r" + (WebsiteManager.Title ?? "---"),
+                        replyMarkup: KeyboardCollection.TitleKeyboardInlineKeyboard);
+
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.ContactEmail + ": \n\r" + (WebsiteManager.ContactEmail ?? "---"),
+                        replyMarkup: KeyboardCollection.ContactEmailKeyboardInlineKeyboard);
+
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.FeedbackEmail + ": \n\r" + (WebsiteManager.FeedbackEmail ?? "---"),
+                        replyMarkup: KeyboardCollection.FeedbackEmailKeyboardInlineKeyboard);
+
+                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                        Localization.ContactPhone + ": \n\r" + (WebsiteManager.ContactPhone ?? "---"),
+                        replyMarkup: KeyboardCollection.ContactPhoneKeyboardInlineKeyboard);
                 }
                 else if (command == Localization.Logo.ToLower())
                 {

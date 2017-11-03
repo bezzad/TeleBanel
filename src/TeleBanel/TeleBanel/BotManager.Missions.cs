@@ -9,6 +9,7 @@ using TeleBanel.Properties;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TeleBanel
 {
@@ -46,20 +47,21 @@ namespace TeleBanel
             if (user.LastCallBackQuery == null)
                 return;
 
+            var propName = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.AboutKey + "Edit", "");
             if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextAboutStep))
             {
                 user.WaitingMessageQuery = nameof(GoNextAboutStep);
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please enter new About and press Enter key.", true);
+                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, $"Please enter new {Localization.ResourceManager.GetString(propName)?.ToLower()} and press Enter key.", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelKeyboardInlineKeyboard);
             }
             else
             {
-                WebsiteManager.About = user.LastMessageQuery.Text;
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "About successfully updated.", true);
+                var prop = WebsiteManager.GetType().GetProperties().FirstOrDefault(p => p.Name == propName);
+                prop?.SetValue(WebsiteManager, user.LastMessageQuery.Text);
                 await Bot.EditMessageTextAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId,
-                    Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
-                    ParseMode.Default, false, KeyboardCollection.AboutKeyboardInlineKeyboard);
+                    Localization.ResourceManager.GetString(propName) + ": \n\r" + (prop?.GetValue(WebsiteManager) ?? "---"),
+                    ParseMode.Default, false, (IReplyMarkup)KeyboardCollection.GetType().GetProperties().FirstOrDefault(p => p.Name.StartsWith(propName))?.GetValue(KeyboardCollection));
 
                 user.WaitingMessageQuery = null; // waiting method called and then clear buffer
             }

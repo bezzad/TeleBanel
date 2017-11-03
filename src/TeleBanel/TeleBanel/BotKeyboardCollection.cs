@@ -11,30 +11,28 @@ namespace TeleBanel
     {
         private IWebsiteMiddleware Website { get; set; }
 
-        public IReplyMarkup PasswordKeyboardInlineKeyboard { get; }
-        public IReplyMarkup PortfolioKeyboardInlineKeyboard { get; }
+        public IReplyMarkup PasswordKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard());
+        public IReplyMarkup PortfolioKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(Website.Url));
         public IReplyMarkup LinksboardInlineKeyboard => new InlineKeyboardMarkup(GetLinksKeyboardInlineKeyboard(Website));
-        public IReplyMarkup AboutKeyboardInlineKeyboard { get; }
-        public IReplyMarkup LogoKeyboardInlineKeyboard { get; }
-        public IReplyMarkup CancelKeyboardInlineKeyboard { get; }
-        public IReplyMarkup CommonReplyKeyboard { get; }
-        public IReplyMarkup RegisterReplyKeyboard { get; }
+        public IReplyMarkup AboutKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard(nameof(Website.About)));
+        public IReplyMarkup ContactEmailKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard(nameof(Website.ContactEmail)));
+        public IReplyMarkup ContactPhoneKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard(nameof(Website.ContactPhone)));
+        public IReplyMarkup FeedbackEmailKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard(nameof(Website.FeedbackEmail)));
+        public IReplyMarkup TitleKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard(nameof(Website.Title)));
+        public IReplyMarkup LogoKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetLogoKeyboardInlineKeyboard());
+        public IReplyMarkup CancelKeyboardInlineKeyboard => new InlineKeyboardMarkup(GetCancelKeyboardInlineKeyboard());
+        public IReplyMarkup CommonReplyKeyboard => new ReplyKeyboardMarkup(GetCommonReplyKeyboard(), true);
+        public IReplyMarkup RegisterReplyKeyboard => new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(), true);
 
 
         public BotKeyboardCollection(IWebsiteMiddleware website)
         {
             Website = website;
-
-            CommonReplyKeyboard = new ReplyKeyboardMarkup(GetCommonReplyKeyboard(), true);
-            RegisterReplyKeyboard = new ReplyKeyboardMarkup(GetRegisterReplyKeyboard(), true);
-            PasswordKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPasswordKeyboardInlineKeyboard());
-            PortfolioKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetPortfolioKeyboardInlineKeyboard(website.Url));
-            AboutKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetAboutKeyboardInlineKeyboard());
-            LogoKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetLogoKeyboardInlineKeyboard());
-            CancelKeyboardInlineKeyboard = new InlineKeyboardMarkup(GetCancelKeyboardInlineKeyboard());
         }
 
-        public KeyboardButton[][] GetCommonReplyKeyboard()
+
+
+        protected KeyboardButton[][] GetCommonReplyKeyboard()
         {
             var commonKeyboard = new[]
             {
@@ -53,8 +51,7 @@ namespace TeleBanel
 
             return commonKeyboard;
         }
-
-        public KeyboardButton[] GetRegisterReplyKeyboard()
+        protected KeyboardButton[] GetRegisterReplyKeyboard()
         {
             var keyboard = new[]
             {
@@ -64,8 +61,7 @@ namespace TeleBanel
 
             return keyboard;
         }
-
-        public InlineKeyboardButton[][] GetPasswordKeyboardInlineKeyboard()
+        protected InlineKeyboardButton[][] GetPasswordKeyboardInlineKeyboard()
         {
             var inlineKeys = new[]
             {
@@ -97,8 +93,7 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-
-        public InlineKeyboardButton[][] GetPortfolioKeyboardInlineKeyboard(string url)
+        protected InlineKeyboardButton[][] GetPortfolioKeyboardInlineKeyboard(string url)
         {
             var inlineKeys = new[]
             {
@@ -125,8 +120,7 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-
-        public InlineKeyboardButton[][] GetLinksKeyboardInlineKeyboard(IWebsiteMiddleware website)
+        protected InlineKeyboardButton[][] GetLinksKeyboardInlineKeyboard(IWebsiteMiddleware website)
         {
             var inlineKeys = new[]
             {
@@ -214,22 +208,19 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-
-        public InlineKeyboardButton[][] GetAboutKeyboardInlineKeyboard()
+        protected InlineKeyboardButton[][] GetAboutKeyboardInlineKeyboard(string propName)
         {
             var inlineKeys = new[]
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " + Localization.Update,
-                        $"{InlinePrefixKeys.AboutKey}Update"),
+                    new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit} {Localization.ResourceManager.GetString(propName)}", $"{InlinePrefixKeys.AboutKey}Edit{propName}")
                 }
             };
 
             return inlineKeys;
         }
-
-        public InlineKeyboardButton[][] GetLogoKeyboardInlineKeyboard()
+        protected InlineKeyboardButton[][] GetLogoKeyboardInlineKeyboard()
         {
             var inlineKeys = new[]
             {
@@ -242,8 +233,7 @@ namespace TeleBanel
 
             return inlineKeys;
         }
-
-        public InlineKeyboardButton[][] GetCancelKeyboardInlineKeyboard()
+        protected InlineKeyboardButton[][] GetCancelKeyboardInlineKeyboard()
         {
             var inlineKeys = new[]
             {
