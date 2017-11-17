@@ -16,7 +16,7 @@ namespace TeleBanel
         public User Me { get; set; }
 
         public IWebsiteMiddleware WebsiteManager { set; get; }
-        public IJobMiddleware JobManager { set; get; }
+        public IProductMiddleware ProductManager { set; get; }
         public IInboxMiddleware InboxManager { set; get; }
     }
 }

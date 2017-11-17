@@ -17,29 +17,66 @@ namespace TeleBanel
     {
         public async void GoNextPortfolioStep(UserWrapper user)
         {
-            var query = user.LastCallBackQuery.Data.ToLower().Replace(InlinePrefixKeys.PortfolioKey, "");
+            var query = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.PortfolioKey, "");
 
-            switch (query)
+            if (query == Localization.AddProduct)
             {
-                case "addjob":
-                    {
-                        break;
-                    }
-                case "showjob":
-                    {
-                        var job = JobManager.GetJob(new Random().Next().ToString());
-                        await Bot.SendPhotoAsync(user, job.Title, job.Id, job.Image);
-                        break;
-                    }
-                case "editjob":
-                    {
-                        break;
-                    }
-                case "deletejob":
-                    {
-                        break;
-                    }
             }
+            else if (query == Localization.ShowProducts)
+            {
+                var pids = ProductManager.GetProductsId();
+                var product = ProductManager.GetProduct(pids.Length / 2);
+                var count = ProductManager.GetProductsId().Length;
+                await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
+                await Bot.SendImageAsync(user, product.Title, product.Image,
+                    KeyboardCollection.ProductInlineKeyboard(product.Id));
+
+                user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
+                    Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
+                    replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(pids.Length / 2, count));
+            }
+            else if (query == Localization.EditProduct)
+            {
+
+            }
+            else if (query == Localization.DeleteProduct)
+            {
+
+            }
+            else if (query.StartsWith(Localization.Previous))
+            {
+                if (int.TryParse(query.Replace(Localization.Previous, "").Replace("_", ""),
+                    out int currentProductIndex) && currentProductIndex > 0)
+                {
+                    var pids = ProductManager.GetProductsId();
+                    var product = ProductManager.GetProduct(pids[currentProductIndex - 1]);
+                    await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
+                    await Bot.SendImageAsync(user, product.Title, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
+                    await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
+                        user.LastCallBackQuery.Message.MessageId,
+                        KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex - 1, pids.Length));
+                }
+            }
+            else if (query.EndsWith(Localization.Next))
+            {
+                if (int.TryParse(query.Replace(Localization.Previous, "").Replace("_", ""),
+                        out int currentProductIndex) && currentProductIndex > 0)
+                {
+                    var pids = ProductManager.GetProductsId();
+                    if (pids.Length > currentProductIndex + 1)
+                    {
+                        var product = ProductManager.GetProduct(pids[currentProductIndex + 1]);
+                        await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
+                        await Bot.SendImageAsync(user, product.Title, product.Image,
+                            KeyboardCollection.ProductInlineKeyboard(product.Id));
+                        await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
+                            user.LastCallBackQuery.Message.MessageId,
+                            KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex + 1, pids.Length));
+                    }
+                }
+            }
+
+            await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id);
         }
 
         public async void GoNextAboutStep(UserWrapper user)
@@ -51,9 +88,10 @@ namespace TeleBanel
             if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextAboutStep))
             {
                 user.WaitingMessageQuery = nameof(GoNextAboutStep);
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, $"Please enter new {Localization.ResourceManager.GetString(propName)?.ToLower()} and press Enter key.", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
+
+                await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id, $"Please enter new {Localization.ResourceManager.GetString(propName)?.ToLower()} and press Enter key.", true);
             }
             else
             {
@@ -75,9 +113,10 @@ namespace TeleBanel
             if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextLogoStep))
             {
                 user.WaitingMessageQuery = nameof(GoNextLogoStep);
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
+
+                await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
             }
             else if (user.LastMessageQuery.Photo.Any())
             {
@@ -92,7 +131,7 @@ namespace TeleBanel
             }
             else
             {
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
+                await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id, "Please send an image to change logo ...", true);
             }
         }
 
@@ -106,10 +145,10 @@ namespace TeleBanel
             {
                 user.WaitingMessageQuery = nameof(GoNextLinksStep);
 
-                await Bot.AnswerCallbackQueryAsync(user.LastCallBackQuery.Id,
-                    $"Please enter new {linkName} link and press Enter key.", true);
                 user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard);
+
+                await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id, $"Please enter new {linkName} link and press Enter key.", true);
             }
             else
             {
@@ -163,9 +202,8 @@ namespace TeleBanel
 
             if (!Accounts.ContainsKey(userId))
             {
-                await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                    Localization.EntryPasswordIsIncorrect,
-                    showAlert: true);
+                await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id, Localization.EntryPasswordIsIncorrect, showAlert: true);
+
                 return false;
             }
 
@@ -182,9 +220,7 @@ namespace TeleBanel
                 {
                     Accounts[userId].IsAuthenticated = true;
 
-                    await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                        Localization.PasswordIsOk,
-                        showAlert: true);
+                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id, Localization.PasswordIsOk, showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     await Bot.SendTextMessageAsync(
                         e.CallbackQuery.Message.Chat.Id,
@@ -195,9 +231,9 @@ namespace TeleBanel
                 else // password is incorrect
                 {
                     Accounts[userId].Password = "";
-                    await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id,
-                        Localization.EntryPasswordIsIncorrect,
-                        showAlert: true);
+                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id,
+                    Localization.EntryPasswordIsIncorrect,
+                    showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     return true;
                 }

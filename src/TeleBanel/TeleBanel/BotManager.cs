@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using TeleBanel.Helper;
 using TeleBanel.Models;
@@ -53,6 +54,8 @@ namespace TeleBanel
 
         private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
+            StartTimeToAnswerCallBack(e.CallbackQuery.From.Id);
+
             var command = e.CallbackQuery.Data.ToLower();
 
             if (UserAuthenticated(e.CallbackQuery.From, out UserWrapper user)) // user authenticated
@@ -216,5 +219,26 @@ namespace TeleBanel
             }
         }
 
+
+        public static void StartTimeToAnswerCallBack(int userId)
+        {
+            CallContext.LogicalSetData($"ShouldDontAnswer_{userId}", DateTime.Now);
+        }
+
+        public static bool CanAnswerCallBack(int userId)
+        {
+            var startTime = CallContext.LogicalGetData($"ShouldDontAnswer_{userId}") as DateTime?;
+            if (startTime.HasValue)
+            {
+                return (DateTime.Now - startTime.Value).TotalSeconds < 13; // after 14sec telegram don't permission to send answer to income callback queries
+            }
+            return false;
+        }
+
+        public async Task AnswerCallbackQueryAsync(int userId, string callbackQueryId, string text = null, bool showAlert = false, string url = null, int cacheTime = 0)
+        {
+            if (CanAnswerCallBack(userId))
+                await Bot.AnswerCallbackQueryAsync(callbackQueryId, text, showAlert, url, cacheTime);
+        }
     }
 }

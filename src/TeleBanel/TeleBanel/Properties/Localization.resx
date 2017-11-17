@@ -123,8 +123,8 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="AddJob" xml:space="preserve">
-    <value>Add Job</value>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Add Product</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -144,14 +144,14 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="DeleteJob" xml:space="preserve">
-    <value>Delete Job</value>
+  <data name="DeleteProduct" xml:space="preserve">
+    <value>Delete Product</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="EditJob" xml:space="preserve">
-    <value>Edit Job</value>
+  <data name="EditProduct" xml:space="preserve">
+    <value>Edit Product</value>
   </data>
   <data name="Enter" xml:space="preserve">
     <value>Enter</value>
@@ -169,10 +169,13 @@
     <value>Flicker</value>
   </data>
   <data name="GetMyId" xml:space="preserve">
-    <value>Get My ID</value>
+    <value>getmyid</value>
   </data>
   <data name="GooglePlus" xml:space="preserve">
     <value>Google+</value>
+  </data>
+  <data name="GotoNextOrPreviousProducts" xml:space="preserve">
+    <value>Go to next or previous products</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -198,6 +201,9 @@
   <data name="Logo" xml:space="preserve">
     <value>Logo</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>»</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -213,14 +219,17 @@
   <data name="Portfolios" xml:space="preserve">
     <value>Portfolios</value>
   </data>
+  <data name="Previous" xml:space="preserve">
+    <value>«</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="Show" xml:space="preserve">
     <value>Show</value>
   </data>
-  <data name="ShowJob" xml:space="preserve">
-    <value>Show Job</value>
+  <data name="ShowProducts" xml:space="preserve">
+    <value>Show Products</value>
   </data>
   <data name="SiteName" xml:space="preserve">
     <value>Site Name</value>

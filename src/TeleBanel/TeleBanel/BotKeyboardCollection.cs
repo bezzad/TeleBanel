@@ -36,6 +36,33 @@ namespace TeleBanel
             return new InlineKeyboardMarkup(GetDeleteMessageInlineKeyboard(id));
         }
 
+        public IReplyMarkup ProductInlineKeyboard(int productId)
+        {
+            return new InlineKeyboardMarkup(new[]
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{InlinePrefixKeys.PortfolioKey}{Localization.Delete}_{productId}"),
+                    new InlineKeyboardCallbackButton(Emoji.Crayon, $"{InlinePrefixKeys.PortfolioKey}{Localization.Edit}_{productId}")
+                }
+            });
+        }
+
+        public IReplyMarkup ProductTrackBarInlineKeyboard(int currentProductIndex, int productsCount)
+        {
+            return new InlineKeyboardMarkup(new[]
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton($"{Localization.Previous} {currentProductIndex - 1}",
+                        $"{InlinePrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
+                    new InlineKeyboardCallbackButton(currentProductIndex.ToString(), $"{InlinePrefixKeys.PortfolioKey}"),
+                    new InlineKeyboardCallbackButton($"{productsCount - currentProductIndex} {Localization.Next}",
+                        $"{InlinePrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}")
+                }
+            });
+        }
+
         protected KeyboardButton[][] GetCommonReplyKeyboard()
         {
             var commonKeyboard = new[]
@@ -59,8 +86,7 @@ namespace TeleBanel
         {
             var keyboard = new[]
             {
-                new KeyboardButton(Emoji.Key + " " + Localization.Register),
-                new KeyboardButton(Emoji.IDButton + " " + Localization.GetMyId)
+                new KeyboardButton(Emoji.Key + " " + Localization.Register)
             };
 
             return keyboard;
@@ -103,18 +129,9 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.NEWButton + " " + Localization.AddJob,
-                        $"{InlinePrefixKeys.PortfolioKey}AddJob"),
-                    new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ShowJob,
-                        $"{InlinePrefixKeys.PortfolioKey}ShowJob")
+                    new InlineKeyboardCallbackButton(Emoji.NEWButton + " " + Localization.AddProduct, $"{InlinePrefixKeys.PortfolioKey}{Localization.AddProduct}"),
+                    new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ShowProducts, $"{InlinePrefixKeys.PortfolioKey}{Localization.ShowProducts}")
 
-                },
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardCallbackButton(Emoji.Crayon + " " + Localization.EditJob,
-                        $"{InlinePrefixKeys.PortfolioKey}EditJob"),
-                    new InlineKeyboardCallbackButton(Emoji.CrossMark + " " + Localization.DeleteJob,
-                        $"{InlinePrefixKeys.PortfolioKey}DeleteJob")
                 },
                 new InlineKeyboardButton[]
                 {

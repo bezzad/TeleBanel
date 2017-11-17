@@ -113,9 +113,9 @@
     <Compile Include="Models\IBot.cs" />
     <Compile Include="Models\Inbox.cs" />
     <Compile Include="Models\IUser.cs" />
-    <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Middlewares\IInboxMiddleware.cs" />
-    <Compile Include="Models\Middlewares\IJobMiddleware.cs" />
+    <Compile Include="Models\Middlewares\IProductMiddleware.cs" />
     <Compile Include="Models\Middlewares\IWebsiteMiddleware.cs" />
     <Compile Include="Models\UserWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,7 +15,7 @@ namespace TeleBanel.Models
         public string WaitingMessageQuery { get; set; } = null;
         public Message LastMessageQuery { get; set; } = null;
         public CallbackQuery LastCallBackQuery { get; set; } = null;
-
+        
         [JsonIgnore]
         internal string Password { get; set; } = "";
 

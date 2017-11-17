@@ -4,19 +4,20 @@ using TeleBanel.Models;
 using TeleBanel.Properties;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TeleBanel.Helper
 {
     public static class BotHelper
     {
-        public static async Task SendPhotoAsync(this ITelegramBotClient bot, UserWrapper user,
-                                                    string caption, string imageName, byte[] imageBytes)
+        public static async Task SendImageAsync(this ITelegramBotClient bot, UserWrapper user,
+                                                    string caption, byte[] imageBytes, IReplyMarkup replyMarkup)
         {
             var msg = await bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, Localization.PleaseWait);
 
             using (var stream = new MemoryStream(imageBytes))
             {
-                await bot.SendPhotoAsync(user.LastCallBackQuery.Message.Chat.Id, new FileToSend(imageName, stream), caption);
+                user.LastMessageQuery = await bot.SendPhotoAsync(user.LastCallBackQuery.Message.Chat.Id, new FileToSend(caption, stream), caption, replyMarkup: replyMarkup);
             }
 
             await bot.DeleteMessageAsync(msg.Chat.Id, msg.MessageId);

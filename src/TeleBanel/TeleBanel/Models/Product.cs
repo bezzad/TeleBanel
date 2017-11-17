@@ -1,9 +1,10 @@
 ﻿namespace TeleBanel.Models
 {
-    public class Job
+    public class Product
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
+        public string Descriptin { get; set; }
         public byte[] Image { get; set; }
     }
 }

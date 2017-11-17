@@ -31,7 +31,7 @@ namespace TeleBanel.Test
             var bot =
                 new BotManager("414286832:AAE-VQpu32juCfeOWLX33SDnyUZ_xHdfkT0", "8", myWebsite)
                 {
-                    JobManager = new JobMiddleware(),
+                    ProductManager = new ProductMiddleware(),
                     InboxManager = new InboxMiddleware()
                 }; // TestForSelfBot
 

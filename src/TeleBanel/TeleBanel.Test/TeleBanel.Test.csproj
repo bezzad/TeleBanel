@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Helper.cs" />
     <Compile Include="MiddlewareModels\InboxMiddleware.cs" />
-    <Compile Include="MiddlewareModels\JobMiddleware.cs" />
+    <Compile Include="MiddlewareModels\ProductMiddleware.cs" />
     <Compile Include="MiddlewareModels\WebsiteMiddleware.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -79,11 +79,11 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Job.
+        ///   Looks up a localized string similar to Add Product.
         /// </summary>
-        internal static string AddJob {
+        internal static string AddProduct {
             get {
-                return ResourceManager.GetString("AddJob", resourceCulture);
+                return ResourceManager.GetString("AddProduct", resourceCulture);
             }
         }
         
@@ -142,11 +142,11 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Job.
+        ///   Looks up a localized string similar to Delete Product.
         /// </summary>
-        internal static string DeleteJob {
+        internal static string DeleteProduct {
             get {
-                return ResourceManager.GetString("DeleteJob", resourceCulture);
+                return ResourceManager.GetString("DeleteProduct", resourceCulture);
             }
         }
         
@@ -160,11 +160,11 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Job.
+        ///   Looks up a localized string similar to Edit Product.
         /// </summary>
-        internal static string EditJob {
+        internal static string EditProduct {
             get {
-                return ResourceManager.GetString("EditJob", resourceCulture);
+                return ResourceManager.GetString("EditProduct", resourceCulture);
             }
         }
         
@@ -214,7 +214,7 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get My ID.
+        ///   Looks up a localized string similar to getmyid.
         /// </summary>
         internal static string GetMyId {
             get {
@@ -228,6 +228,15 @@ namespace TeleBanel.Properties {
         internal static string GooglePlus {
             get {
                 return ResourceManager.GetString("GooglePlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to next or previous products.
+        /// </summary>
+        internal static string GotoNextOrPreviousProducts {
+            get {
+                return ResourceManager.GetString("GotoNextOrPreviousProducts", resourceCulture);
             }
         }
         
@@ -304,6 +313,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ».
+        /// </summary>
+        internal static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string Password {
@@ -349,6 +367,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to «.
+        /// </summary>
+        internal static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         internal static string Register {
@@ -367,11 +394,11 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Job.
+        ///   Looks up a localized string similar to Show Products.
         /// </summary>
-        internal static string ShowJob {
+        internal static string ShowProducts {
             get {
-                return ResourceManager.GetString("ShowJob", resourceCulture);
+                return ResourceManager.GetString("ShowProducts", resourceCulture);
             }
         }
         
