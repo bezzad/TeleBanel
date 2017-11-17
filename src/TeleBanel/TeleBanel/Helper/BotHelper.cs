@@ -11,13 +11,13 @@ namespace TeleBanel.Helper
     public static class BotHelper
     {
         public static async Task SendImageAsync(this ITelegramBotClient bot, UserWrapper user,
-                                                    string caption, byte[] imageBytes, IReplyMarkup replyMarkup)
+                                                    string caption, string description, byte[] imageBytes, IReplyMarkup replyMarkup)
         {
             var msg = await bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, Localization.PleaseWait);
 
             using (var stream = new MemoryStream(imageBytes))
             {
-                user.LastMessageQuery = await bot.SendPhotoAsync(user.LastCallBackQuery.Message.Chat.Id, new FileToSend(caption, stream), caption, replyMarkup: replyMarkup);
+                user.LastMessageQuery = await bot.SendPhotoAsync(user.LastCallBackQuery.Message.Chat.Id, new FileToSend(caption, stream), description, replyMarkup: replyMarkup);
             }
 
             await bot.DeleteMessageAsync(msg.Chat.Id, msg.MessageId);

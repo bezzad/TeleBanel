@@ -165,6 +165,9 @@
   <data name="FeedbackEmail" xml:space="preserve">
     <value>Feedback Email</value>
   </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
   <data name="Flicker" xml:space="preserve">
     <value>Flicker</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="InvalidRequest" xml:space="preserve">
     <value>Invalid request</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Last</value>
   </data>
   <data name="Layout" xml:space="preserve">
     <value>Layout</value>

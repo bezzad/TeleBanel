@@ -7,7 +7,6 @@ using TeleBanel.Helper;
 using TeleBanel.Models;
 using TeleBanel.Properties;
 using Telegram.Bot.Args;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -15,7 +14,7 @@ namespace TeleBanel
 {
     public partial class BotManager
     {
-        public async void GoNextPortfolioStep(UserWrapper user)
+        public async Task GoNextPortfolioStep(UserWrapper user)
         {
             var query = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.PortfolioKey, "");
 
@@ -27,9 +26,7 @@ namespace TeleBanel
                 var pids = ProductManager.GetProductsId();
                 var product = ProductManager.GetProduct(pids.Length / 2);
                 var count = ProductManager.GetProductsId().Length;
-                await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
-                await Bot.SendImageAsync(user, product.Title, product.Image,
-                    KeyboardCollection.ProductInlineKeyboard(product.Id));
+                await Bot.SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
 
                 user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
                     Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
@@ -50,28 +47,27 @@ namespace TeleBanel
                 {
                     var pids = ProductManager.GetProductsId();
                     var product = ProductManager.GetProduct(pids[currentProductIndex - 1]);
-                    await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
-                    await Bot.SendImageAsync(user, product.Title, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
-                    await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                        user.LastCallBackQuery.Message.MessageId,
-                        KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex - 1, pids.Length));
+                    await Bot.DeleteMessageAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId);
+                    await Bot.SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
+                    user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
+                        Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
+                        replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex - 1, pids.Length));
                 }
             }
-            else if (query.EndsWith(Localization.Next))
+            else if (query.StartsWith(Localization.Next))
             {
-                if (int.TryParse(query.Replace(Localization.Previous, "").Replace("_", ""),
+                if (int.TryParse(query.Replace(Localization.Next, "").Replace("_", ""),
                         out int currentProductIndex) && currentProductIndex > 0)
                 {
                     var pids = ProductManager.GetProductsId();
                     if (pids.Length > currentProductIndex + 1)
                     {
                         var product = ProductManager.GetProduct(pids[currentProductIndex + 1]);
-                        await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, product.Descriptin);
-                        await Bot.SendImageAsync(user, product.Title, product.Image,
-                            KeyboardCollection.ProductInlineKeyboard(product.Id));
-                        await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
-                            user.LastCallBackQuery.Message.MessageId,
-                            KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex + 1, pids.Length));
+                        await Bot.DeleteMessageAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId);
+                        await Bot.SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
+                        user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
+                            Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
+                            replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex + 1, pids.Length));
                     }
                 }
             }
@@ -79,7 +75,7 @@ namespace TeleBanel
             await AnswerCallbackQueryAsync(user.Id, user.LastCallBackQuery.Id);
         }
 
-        public async void GoNextAboutStep(UserWrapper user)
+        public async Task GoNextAboutStep(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
@@ -105,7 +101,7 @@ namespace TeleBanel
             }
         }
 
-        public async void GoNextLogoStep(UserWrapper user)
+        public async Task GoNextLogoStep(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
@@ -122,7 +118,7 @@ namespace TeleBanel
             {
                 using (var mem = new MemoryStream())
                 {
-                    var file = await Bot.GetFileAsync(user.LastMessageQuery.Photo.Last().FileId, mem);
+                    await Bot.GetFileAsync(user.LastMessageQuery.Photo.Last().FileId, mem);
                     WebsiteManager.Logo = mem.ToByte();
                     await Bot.DeleteMessageAsync(user.LastCallBackQuery.Message.Chat.Id, user.LastCallBackQuery.Message.MessageId);
                     await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, "The logo changed successfully.");
@@ -135,7 +131,7 @@ namespace TeleBanel
             }
         }
 
-        public async void GoNextLinksStep(UserWrapper user)
+        public async Task GoNextLinksStep(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
@@ -179,7 +175,7 @@ namespace TeleBanel
             }
         }
 
-        public async void GoNextInboxStep(UserWrapper user)
+        public async Task GoNextInboxStep(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
@@ -220,8 +216,8 @@ namespace TeleBanel
                 {
                     Accounts[userId].IsAuthenticated = true;
 
-                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id, Localization.PasswordIsOk, showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
+                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id, Localization.PasswordIsOk, showAlert: true);
                     await Bot.SendTextMessageAsync(
                         e.CallbackQuery.Message.Chat.Id,
                         Localization.PleaseChooseYourOptionDoubleDot,
@@ -231,9 +227,7 @@ namespace TeleBanel
                 else // password is incorrect
                 {
                     Accounts[userId].Password = "";
-                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id,
-                    Localization.EntryPasswordIsIncorrect,
-                    showAlert: true);
+                    await AnswerCallbackQueryAsync(e.CallbackQuery.From.Id, e.CallbackQuery.Id, Localization.EntryPasswordIsIncorrect, showAlert: true);
                     await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
                     return true;
                 }
@@ -252,7 +246,7 @@ namespace TeleBanel
             }
 
             await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId,
-                $"{Emoji.LightBulb} {Localization.Password}: " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
+                $"{Emoji.Key} {Localization.Password}: " + new string(Accounts[userId].Password.Select(x => '*').ToArray()),
                 ParseMode.Default, false, KeyboardCollection.PasswordInlineKeyboard);
 
             return true;

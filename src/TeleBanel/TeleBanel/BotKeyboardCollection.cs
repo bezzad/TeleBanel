@@ -54,11 +54,11 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton($"{Localization.Previous} {currentProductIndex - 1}",
-                        $"{InlinePrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
+                    new InlineKeyboardCallbackButton(Emoji.LastTrackButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.First}"),
+                    new InlineKeyboardCallbackButton(Emoji.ReverseButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
                     new InlineKeyboardCallbackButton(currentProductIndex.ToString(), $"{InlinePrefixKeys.PortfolioKey}"),
-                    new InlineKeyboardCallbackButton($"{productsCount - currentProductIndex} {Localization.Next}",
-                        $"{InlinePrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}")
+                    new InlineKeyboardCallbackButton(Emoji.PlayButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}"),
+                    new InlineKeyboardCallbackButton(Emoji.NextTrackButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Last}")
                 }
             });
         }

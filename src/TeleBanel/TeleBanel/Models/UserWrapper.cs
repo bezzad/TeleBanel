@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Threading;
 using Newtonsoft.Json;
 using Telegram.Bot.Types;
 
@@ -15,9 +16,12 @@ namespace TeleBanel.Models
         public string WaitingMessageQuery { get; set; } = null;
         public Message LastMessageQuery { get; set; } = null;
         public CallbackQuery LastCallBackQuery { get; set; } = null;
-        
+
         [JsonIgnore]
         internal string Password { get; set; } = "";
+
+        [JsonIgnore]
+        internal SemaphoreSlim ConcurrencyController { get; set; } = new SemaphoreSlim(1, 1);
 
         [JsonIgnore]
         public CultureInfo Culture => new CultureInfo(Language);

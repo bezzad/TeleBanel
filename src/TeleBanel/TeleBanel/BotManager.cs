@@ -60,39 +60,48 @@ namespace TeleBanel
 
             if (UserAuthenticated(e.CallbackQuery.From, out UserWrapper user)) // user authenticated
             {
-                user.LastCallBackQuery = e.CallbackQuery;
+                try
+                {
+                    await user.ConcurrencyController.WaitAsync();
+                    user.LastCallBackQuery = e.CallbackQuery;
 
-                if (command == Localization.Cancel.ToLower())
-                {
-                    user.WaitingMessageQuery = null;
-                    await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId);
+                    if (command == Localization.Cancel.ToLower())
+                    {
+                        user.WaitingMessageQuery = null;
+                        await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id,
+                            e.CallbackQuery.Message.MessageId);
+                    }
+                    else if (command.StartsWith(InlinePrefixKeys.PortfolioKey))
+                    {
+                        await GoNextPortfolioStep(user);
+                    }
+                    else if (command.StartsWith(InlinePrefixKeys.AboutKey))
+                    {
+                        await GoNextAboutStep(user);
+                    }
+                    else if (command.StartsWith(InlinePrefixKeys.LogoKey))
+                    {
+                        await GoNextLogoStep(user);
+                    }
+                    else if (command.StartsWith(InlinePrefixKeys.LinksKey))
+                    {
+                        await GoNextLinksStep(user);
+                    }
+                    else if (command.StartsWith(InlinePrefixKeys.InboxKey))
+                    {
+                        await GoNextInboxStep(user);
+                    }
+                    else
+                    {
+                        await Bot.SendTextMessageAsync(
+                            e.CallbackQuery.Message.Chat.Id,
+                            Localization.PleaseChooseYourOptionDoubleDot,
+                            replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                    }
                 }
-                else if (command.StartsWith(InlinePrefixKeys.PortfolioKey))
+                finally
                 {
-                    GoNextPortfolioStep(user);
-                }
-                else if (command.StartsWith(InlinePrefixKeys.AboutKey))
-                {
-                    GoNextAboutStep(user);
-                }
-                else if (command.StartsWith(InlinePrefixKeys.LogoKey))
-                {
-                    GoNextLogoStep(user);
-                }
-                else if (command.StartsWith(InlinePrefixKeys.LinksKey))
-                {
-                    GoNextLinksStep(user);
-                }
-                else if (command.StartsWith(InlinePrefixKeys.InboxKey))
-                {
-                    GoNextInboxStep(user);
-                }
-                else
-                {
-                    await Bot.SendTextMessageAsync(
-                        e.CallbackQuery.Message.Chat.Id,
-                        Localization.PleaseChooseYourOptionDoubleDot,
-                        replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                    user.ConcurrencyController.Release();
                 }
             }
             else // Before authenticate
@@ -118,79 +127,88 @@ namespace TeleBanel
             }
             else if (UserAuthenticated(e.Message.From, out UserWrapper user)) // CommonReplyKeyboard
             {
-                user.LastMessageQuery = e.Message;
-
-                if (command == Localization.Portfolios.ToLower())
+                try
                 {
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.Portfolios,
-                        replyMarkup: KeyboardCollection.PortfolioInlineKeyboard);
-                }
-                else if (command == Localization.About.ToLower())
-                {
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
-                        replyMarkup: KeyboardCollection.AboutInlineKeyboard);
+                    await user.ConcurrencyController.WaitAsync();
+                    user.LastMessageQuery = e.Message;
 
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.Title + ": \n\r" + (WebsiteManager.Title ?? "---"),
-                        replyMarkup: KeyboardCollection.TitleInlineKeyboard);
-
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.ContactEmail + ": \n\r" + (WebsiteManager.ContactEmail ?? "---"),
-                        replyMarkup: KeyboardCollection.ContactEmailInlineKeyboard);
-
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.FeedbackEmail + ": \n\r" + (WebsiteManager.FeedbackEmail ?? "---"),
-                        replyMarkup: KeyboardCollection.FeedbackEmailInlineKeyboard);
-
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        Localization.ContactPhone + ": \n\r" + (WebsiteManager.ContactPhone ?? "---"),
-                        replyMarkup: KeyboardCollection.ContactPhoneInlineKeyboard);
-                }
-                else if (command == Localization.Logo.ToLower())
-                {
-                    using (var stream = new MemoryStream(WebsiteManager.Logo))
-                    {
-                        await Bot.SendPhotoAsync(e.Message.Chat.Id,
-                            photo: new FileToSend("logo", stream),
-                            caption: Localization.Logo,
-                            replyMarkup: KeyboardCollection.LogoInlineKeyboard);
-                    }
-                }
-                else if (command == Localization.Links.ToLower())
-                {
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
-                        replyMarkup: KeyboardCollection.LinksInlineKeyboard);
-                }
-                else if (command == Localization.Inbox.ToLower())
-                {
-                    await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        $"{Emoji.SpeechBalloon + Emoji.SpeechBalloon}   Messages   {Emoji.SpeechBalloon + Emoji.SpeechBalloon}");
-
-                    foreach (var msg in InboxManager.GetMessages())
+                    if (command == Localization.Portfolios.ToLower())
                     {
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                            $"{Emoji.Girl} {msg.Name}:    {msg.Subject}" +
-                            $"\n\r{Emoji.SpeechBalloon} {msg.Message}" +
-                            $"\n\r<a href='https://mail.google.com/mail/u/0/?view=cm&tf=0&to={msg.Email}&su=feedback+(via+{WebsiteManager.SiteName})&body=%0D%0A--%0D%0Avia+{WebsiteManager.SiteName}&bcc&cc&fs=1'>Reply {msg.Name}</a>", parseMode: ParseMode.Html,
-                            replyMarkup: KeyboardCollection.DeleteMessageInlineKeyboard(msg.Id));
+                            Localization.Portfolios,
+                            replyMarkup: KeyboardCollection.PortfolioInlineKeyboard);
                     }
-                }
-                else
-                {
-                    if (user.WaitingMessageQuery != null)
+                    else if (command == Localization.About.ToLower())
                     {
-                        var t = typeof(BotManager);
-                        var m = t.GetMethod(user.WaitingMessageQuery);
-                        m?.Invoke(this, new object[] { user });
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
+                            replyMarkup: KeyboardCollection.AboutInlineKeyboard);
+
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            Localization.Title + ": \n\r" + (WebsiteManager.Title ?? "---"),
+                            replyMarkup: KeyboardCollection.TitleInlineKeyboard);
+
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            Localization.ContactEmail + ": \n\r" + (WebsiteManager.ContactEmail ?? "---"),
+                            replyMarkup: KeyboardCollection.ContactEmailInlineKeyboard);
+
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            Localization.FeedbackEmail + ": \n\r" + (WebsiteManager.FeedbackEmail ?? "---"),
+                            replyMarkup: KeyboardCollection.FeedbackEmailInlineKeyboard);
+
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            Localization.ContactPhone + ": \n\r" + (WebsiteManager.ContactPhone ?? "---"),
+                            replyMarkup: KeyboardCollection.ContactPhoneInlineKeyboard);
+                    }
+                    else if (command == Localization.Logo.ToLower())
+                    {
+                        using (var stream = new MemoryStream(WebsiteManager.Logo))
+                        {
+                            await Bot.SendPhotoAsync(e.Message.Chat.Id,
+                                photo: new FileToSend("logo", stream),
+                                caption: Localization.Logo,
+                                replyMarkup: KeyboardCollection.LogoInlineKeyboard);
+                        }
+                    }
+                    else if (command == Localization.Links.ToLower())
+                    {
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
+                            replyMarkup: KeyboardCollection.LinksInlineKeyboard);
+                    }
+                    else if (command == Localization.Inbox.ToLower())
+                    {
+                        await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                            $"{Emoji.SpeechBalloon + Emoji.SpeechBalloon}   Messages   {Emoji.SpeechBalloon + Emoji.SpeechBalloon}");
+
+                        foreach (var msg in InboxManager.GetMessages())
+                        {
+                            await Bot.SendTextMessageAsync(e.Message.Chat.Id,
+                                $"{Emoji.Girl} {msg.Name}:    {msg.Subject}" +
+                                $"\n\r{Emoji.SpeechBalloon} {msg.Message}" +
+                                $"\n\r<a href='https://mail.google.com/mail/u/0/?view=cm&tf=0&to={msg.Email}&su=feedback+(via+{WebsiteManager.SiteName})&body=%0D%0A--%0D%0Avia+{WebsiteManager.SiteName}&bcc&cc&fs=1'>Reply {msg.Name}</a>",
+                                parseMode: ParseMode.Html,
+                                replyMarkup: KeyboardCollection.DeleteMessageInlineKeyboard(msg.Id));
+                        }
                     }
                     else
-                        await Bot.SendTextMessageAsync(
-                            e.Message.Chat.Id,
-                            Localization.PleaseChooseYourOptionDoubleDot,
-                            replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                    {
+                        if (user.WaitingMessageQuery != null)
+                        {
+                            var t = typeof(BotManager);
+                            var m = t.GetMethod(user.WaitingMessageQuery);
+                            m?.Invoke(this, new object[] { user });
+                        }
+                        else
+                            await Bot.SendTextMessageAsync(
+                                e.Message.Chat.Id,
+                                Localization.PleaseChooseYourOptionDoubleDot,
+                                replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                    }
+                }
+                finally
+                {
+                    user.ConcurrencyController.Release();
                 }
             }
             else // RegisterReplyKeyboard
@@ -206,7 +224,7 @@ namespace TeleBanel
                 {
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                        $"{Emoji.LightBulb} {Localization.Password}: ",
+                        $"{Emoji.Key} {Localization.Password}: ",
                         replyMarkup: KeyboardCollection.PasswordInlineKeyboard);
                 }
                 else
