@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 
 namespace TeleBanel.Helper
 {
@@ -28,6 +29,15 @@ namespace TeleBanel.Helper
         public static bool IsEnglishLetter(this char ch)
         {
             return EnglishLetters.Any(c => c.Equals(ch)) || NumericalLetters.Any(c => c.Equals(ch));
+        }
+
+        public static byte[] ToByte(this Stream input)
+        {
+            using (var ms = new MemoryStream())
+            {
+                input.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }

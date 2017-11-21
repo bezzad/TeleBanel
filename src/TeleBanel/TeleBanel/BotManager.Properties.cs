@@ -6,9 +6,10 @@ using Telegram.Bot.Types;
 
 namespace TeleBanel
 {
-   public partial class BotManager
+    // Bot Manager Properties
+    public partial class BotManager
     {
-		protected string BotApiPassword { get; set; }
+        protected string BotApiPassword { get; set; }
         public string BotApiKey { get; set; }
         public Dictionary<int, UserWrapper> Accounts { get; set; }
         public TelegramBotClient Bot { get; set; }

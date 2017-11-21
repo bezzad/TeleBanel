@@ -88,6 +88,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Connected..
+        /// </summary>
+        internal static string Bot_Connected {
+            get {
+                return ResourceManager.GetString("Bot_Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {

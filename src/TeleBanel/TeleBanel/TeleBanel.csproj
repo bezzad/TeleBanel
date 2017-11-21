@@ -99,9 +99,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\BotHelper.cs" />
     <Compile Include="BotKeyboardCollection.cs" />
     <Compile Include="BotManager.cs" />
+    <Compile Include="BotManager.Helpers.cs" />
     <Compile Include="BotManager.Missions.cs" />
     <Compile Include="Helper\Emoji.cs" />
     <Compile Include="Helper\InlinePrefixKeys.cs" />

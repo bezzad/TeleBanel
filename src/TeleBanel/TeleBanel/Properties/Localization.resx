@@ -261,4 +261,7 @@
   <data name="Website" xml:space="preserve">
     <value>Website</value>
   </data>
+  <data name="Bot_Connected" xml:space="preserve">
+    <value>{0} Connected.</value>
+  </data>
 </root>

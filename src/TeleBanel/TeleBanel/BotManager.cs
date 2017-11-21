@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using TeleBanel.Helper;
 using TeleBanel.Models;
@@ -14,6 +13,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace TeleBanel
 {
+    // Bot Manager
     public partial class BotManager
     {
         #region Constructors
@@ -23,12 +23,11 @@ namespace TeleBanel
             Accounts = new Dictionary<int, UserWrapper>();
             BotApiKey = apiKey;
             BotApiPassword = botPassword;
-            KeyboardCollection = new BotKeyboardCollection(websiteInfo);
+            KeyboardCollection = new BotKeyboardCollection();
             WebsiteManager = websiteInfo;
         }
 
         #endregion
-
 
         public async Task StartListeningAsync()
         {
@@ -38,7 +37,7 @@ namespace TeleBanel
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
 
             Me = await Bot.GetMeAsync();
-            Console.WriteLine($"{Me.Username} Connected.");
+            Console.WriteLine(Localization.Bot_Connected, Me.Username);
         }
 
         public bool UserAuthenticated(User user, out UserWrapper userWrapper)
@@ -54,22 +53,20 @@ namespace TeleBanel
 
         private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
-            StartTimeToAnswerCallBack(e.CallbackQuery.From.Id);
-
-            var command = e.CallbackQuery.Data.ToLower();
-
             if (UserAuthenticated(e.CallbackQuery.From, out UserWrapper user)) // user authenticated
             {
                 try
                 {
                     await user.ConcurrencyController.WaitAsync();
+                    StartTimeToAnswerCallBack(user);
+
+                    var command = e.CallbackQuery.Data.ToLower();
                     user.LastCallBackQuery = e.CallbackQuery;
 
                     if (command == Localization.Cancel.ToLower())
                     {
                         user.WaitingMessageQuery = null;
-                        await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id,
-                            e.CallbackQuery.Message.MessageId);
+                        await DeleteMessageAsync(e.CallbackQuery.Message);
                     }
                     else if (command.StartsWith(InlinePrefixKeys.PortfolioKey))
                     {
@@ -93,10 +90,7 @@ namespace TeleBanel
                     }
                     else
                     {
-                        await Bot.SendTextMessageAsync(
-                            e.CallbackQuery.Message.Chat.Id,
-                            Localization.PleaseChooseYourOptionDoubleDot,
-                            replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                        await AnswerCallbackQueryAsync(user);
                     }
                 }
                 finally
@@ -107,7 +101,6 @@ namespace TeleBanel
             else // Before authenticate
                 await GoNextPasswordStep(e);
         }
-
 
         private async void Bot_OnMessage(object sender, MessageEventArgs e)
         {
@@ -136,7 +129,7 @@ namespace TeleBanel
                     {
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             Localization.Portfolios,
-                            replyMarkup: KeyboardCollection.PortfolioInlineKeyboard);
+                            replyMarkup: KeyboardCollection.PortfolioInlineKeyboard(WebsiteManager.Url));
                     }
                     else if (command == Localization.About.ToLower())
                     {
@@ -167,14 +160,14 @@ namespace TeleBanel
                             await Bot.SendPhotoAsync(e.Message.Chat.Id,
                                 photo: new FileToSend("logo", stream),
                                 caption: Localization.Logo,
-                                replyMarkup: KeyboardCollection.LogoInlineKeyboard);
+                                replyMarkup: KeyboardCollection.LogoInlineKeyboard());
                         }
                     }
                     else if (command == Localization.Links.ToLower())
                     {
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
-                            replyMarkup: KeyboardCollection.LinksInlineKeyboard);
+                            replyMarkup: KeyboardCollection.LinksInlineKeyboard(WebsiteManager));
                     }
                     else if (command == Localization.Inbox.ToLower())
                     {
@@ -203,7 +196,7 @@ namespace TeleBanel
                             await Bot.SendTextMessageAsync(
                                 e.Message.Chat.Id,
                                 Localization.PleaseChooseYourOptionDoubleDot,
-                                replyMarkup: KeyboardCollection.CommonReplyKeyboard);
+                                replyMarkup: KeyboardCollection.CommonReplyKeyboard());
                     }
                 }
                 finally
@@ -218,45 +211,24 @@ namespace TeleBanel
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.PleaseChooseYourOptionDoubleDot,
-                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard);
+                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard());
                 }
                 else if (command == Localization.Register.ToLower())
                 {
                     Accounts[userId].Password = "";
                     await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                         $"{Emoji.Key} {Localization.Password}: ",
-                        replyMarkup: KeyboardCollection.PasswordInlineKeyboard);
+                        replyMarkup: KeyboardCollection.PasswordInlineKeyboard());
                 }
                 else
                 {
                     await Bot.SendTextMessageAsync(
                         e.Message.Chat.Id,
                         Localization.PleaseChooseYourOptionDoubleDot,
-                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard);
+                        replyMarkup: KeyboardCollection.RegisterReplyKeyboard());
                 }
             }
         }
 
-
-        public static void StartTimeToAnswerCallBack(int userId)
-        {
-            CallContext.LogicalSetData($"ShouldDontAnswer_{userId}", DateTime.Now);
-        }
-
-        public static bool CanAnswerCallBack(int userId)
-        {
-            var startTime = CallContext.LogicalGetData($"ShouldDontAnswer_{userId}") as DateTime?;
-            if (startTime.HasValue)
-            {
-                return (DateTime.Now - startTime.Value).TotalSeconds < 13; // after 14sec telegram don't permission to send answer to income callback queries
-            }
-            return false;
-        }
-
-        public async Task AnswerCallbackQueryAsync(int userId, string callbackQueryId, string text = null, bool showAlert = false, string url = null, int cacheTime = 0)
-        {
-            if (CanAnswerCallBack(userId))
-                await Bot.AnswerCallbackQueryAsync(callbackQueryId, text, showAlert, url, cacheTime);
-        }
     }
 }

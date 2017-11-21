@@ -2,6 +2,7 @@
 using System.Threading;
 using Newtonsoft.Json;
 using Telegram.Bot.Types;
+using System.Diagnostics;
 
 namespace TeleBanel.Models
 {
@@ -22,6 +23,8 @@ namespace TeleBanel.Models
 
         [JsonIgnore]
         internal SemaphoreSlim ConcurrencyController { get; set; } = new SemaphoreSlim(1, 1);
+
+        internal Stopwatch LastRequestElapsedTime { get; set; } = new Stopwatch();
 
         [JsonIgnore]
         public CultureInfo Culture => new CultureInfo(Language);
