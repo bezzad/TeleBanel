@@ -71,10 +71,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo.png" />
+    <EmbeddedResource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TestImage.JPG" />
+    <EmbeddedResource Include="Resources\0.png" />
+    <EmbeddedResource Include="Resources\1.png" />
+    <EmbeddedResource Include="Resources\2.png" />
+    <EmbeddedResource Include="Resources\3.png" />
+    <EmbeddedResource Include="Resources\4.png" />
+    <EmbeddedResource Include="Resources\5.png" />
+    <EmbeddedResource Include="Resources\6.png" />
+    <EmbeddedResource Include="Resources\7.png" />
+    <EmbeddedResource Include="Resources\8.png" />
+    <EmbeddedResource Include="Resources\9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -244,13 +244,14 @@ namespace TeleBanel
 
             return new InlineKeyboardMarkup(inlineKeys);
         }
-        public IReplyMarkup DeleteMessageInlineKeyboard(int id)
+        public IReplyMarkup InboxMessageInlineKeyboard(int id, string replyName, string replyLink)
         {
             var inlineKeys = new[]
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.HeavyMultiplicationX + " " + Localization.Delete, $"{InlinePrefixKeys.InboxKey}Delete_{id}"),
+                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{InlinePrefixKeys.InboxKey}Delete_{id}"),
+                    new InlineKeyboardUrlButton(replyName, replyLink)
                 }
             };
 

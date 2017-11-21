@@ -93,6 +93,10 @@ namespace TeleBanel
                         await AnswerCallbackQueryAsync(user);
                     }
                 }
+                catch (Exception exp)
+                {
+                    Console.WriteLine(exp);
+                }
                 finally
                 {
                     user.ConcurrencyController.Release();
@@ -127,12 +131,15 @@ namespace TeleBanel
 
                     if (command == Localization.Portfolios.ToLower())
                     {
+                        await Bot.SendChatActionAsync(e.Message.Chat.Id, ChatAction.Typing);
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             Localization.Portfolios,
                             replyMarkup: KeyboardCollection.PortfolioInlineKeyboard(WebsiteManager.Url));
                     }
                     else if (command == Localization.About.ToLower())
                     {
+                        await Bot.SendChatActionAsync(e.Message.Chat.Id, ChatAction.Typing);
+
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             Localization.About + ": \n\r" + (WebsiteManager.About ?? "---"),
                             replyMarkup: KeyboardCollection.AboutInlineKeyboard);
@@ -155,6 +162,8 @@ namespace TeleBanel
                     }
                     else if (command == Localization.Logo.ToLower())
                     {
+                        await Bot.SendChatActionAsync(e.Message.Chat.Id, ChatAction.UploadPhoto);
+
                         using (var stream = new MemoryStream(WebsiteManager.Logo))
                         {
                             await Bot.SendPhotoAsync(e.Message.Chat.Id,
@@ -165,23 +174,27 @@ namespace TeleBanel
                     }
                     else if (command == Localization.Links.ToLower())
                     {
+                        await Bot.SendChatActionAsync(e.Message.Chat.Id, ChatAction.Typing);
+
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             $"{Emoji.Link + Emoji.Link}           L  I  N  K  S           {Emoji.Link + Emoji.Link}",
                             replyMarkup: KeyboardCollection.LinksInlineKeyboard(WebsiteManager));
                     }
                     else if (command == Localization.Inbox.ToLower())
                     {
+                        await Bot.SendChatActionAsync(e.Message.Chat.Id, ChatAction.Typing);
+
                         await Bot.SendTextMessageAsync(e.Message.Chat.Id,
                             $"{Emoji.SpeechBalloon + Emoji.SpeechBalloon}   Messages   {Emoji.SpeechBalloon + Emoji.SpeechBalloon}");
 
                         foreach (var msg in InboxManager.GetMessages())
                         {
+                            var replyLink =
+                                $"https://mail.google.com/mail/u/0/?view=cm&tf=0&to={msg.Email}&su=feedback+(via+{WebsiteManager.SiteName})&body=%0D%0A--%0D%0Avia+{WebsiteManager.SiteName}&bcc&cc&fs=1";
+
                             await Bot.SendTextMessageAsync(e.Message.Chat.Id,
-                                $"{Emoji.Girl} {msg.Name}:    {msg.Subject}" +
-                                $"\n\r{Emoji.SpeechBalloon} {msg.Message}" +
-                                $"\n\r<a href='https://mail.google.com/mail/u/0/?view=cm&tf=0&to={msg.Email}&su=feedback+(via+{WebsiteManager.SiteName})&body=%0D%0A--%0D%0Avia+{WebsiteManager.SiteName}&bcc&cc&fs=1'>Reply {msg.Name}</a>",
-                                parseMode: ParseMode.Html,
-                                replyMarkup: KeyboardCollection.DeleteMessageInlineKeyboard(msg.Id));
+                                $"{Emoji.WomanArtistLightSkinTone} {msg.Name}:    {msg.Subject}\n\r\n\r{Emoji.SpeechBalloon} {msg.Message}", parseMode: ParseMode.Html,
+                                replyMarkup: KeyboardCollection.InboxMessageInlineKeyboard(msg.Id, $"Reply {msg.Name}", replyLink));
                         }
                     }
                     else
@@ -198,6 +211,10 @@ namespace TeleBanel
                                 Localization.PleaseChooseYourOptionDoubleDot,
                                 replyMarkup: KeyboardCollection.CommonReplyKeyboard());
                     }
+                }
+                catch (Exception exp)
+                {
+                    Console.WriteLine(exp);
                 }
                 finally
                 {

@@ -53,6 +53,7 @@ namespace TeleBanel
             string caption, string description, byte[] imageBytes, IReplyMarkup replyMarkup)
         {
             var msg = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, Localization.PleaseWait);
+            await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
 
             using (var stream = new MemoryStream(imageBytes))
             {

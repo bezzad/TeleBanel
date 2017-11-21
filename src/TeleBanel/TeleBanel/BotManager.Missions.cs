@@ -24,6 +24,8 @@ namespace TeleBanel
             }
             else if (query == Localization.ShowProducts)
             {
+                await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
+
                 var pids = ProductManager.GetProductsId();
                 var product = ProductManager.GetProduct(pids.Length / 2);
                 var count = ProductManager.GetProductsId().Length;
@@ -46,6 +48,8 @@ namespace TeleBanel
                 if (int.TryParse(query.Replace(Localization.Previous, "").Replace("_", ""),
                     out int currentProductIndex) && currentProductIndex > 0)
                 {
+                    await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
+
                     var pids = ProductManager.GetProductsId();
                     var product = ProductManager.GetProduct(pids[currentProductIndex - 1]);
                     await DeleteMessageAsync(user.LastCallBackQuery.Message);
@@ -60,6 +64,8 @@ namespace TeleBanel
                 if (int.TryParse(query.Replace(Localization.Next, "").Replace("_", ""),
                         out int currentProductIndex) && currentProductIndex > 0)
                 {
+                    await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
+
                     var pids = ProductManager.GetProductsId();
                     if (pids.Length > currentProductIndex + 1)
                     {
@@ -144,8 +150,8 @@ namespace TeleBanel
 
                 user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard());
-
-                await AnswerCallbackQueryAsync(user, $"Please enter new {linkName} link and press Enter key.", false, cacheTime: 6000);
+                
+                await AnswerCallbackQueryAsync(user, $"Please enter new {linkName} link and press Enter key.", cacheTime: 6000);
             }
             else
             {
@@ -178,17 +184,16 @@ namespace TeleBanel
 
         public async Task GoNextInboxStep(UserWrapper user)
         {
-            if (user.LastCallBackQuery == null)
+            if (user?.LastCallBackQuery == null)
                 return;
 
-            var msgId = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.InboxKey + "Delete_", "");
-            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextInboxStep))
+            var msgId = user.LastCallBackQuery?.Data?.Replace(InlinePrefixKeys.InboxKey + "Delete_", "");
+
+            if (int.TryParse(msgId, out int id))
             {
-                if (int.TryParse(msgId, out int id))
-                {
-                    InboxManager.DeleteMessage(id);
-                    await DeleteMessageAsync(user.LastCallBackQuery.Message);
-                }
+                InboxManager.DeleteMessage(id);
+                await DeleteMessageAsync(user.LastCallBackQuery.Message);
+                await AnswerCallbackQueryAsync(user, "Message removed from your inbox");
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TeleBanel.Models;
 using TeleBanel.Models.Middlewares;
@@ -23,7 +24,7 @@ namespace TeleBanel.Test.MiddlewareModels
                         Id = i,
                         Title = "عنوان عکس " + i,
                         Descriptin = $"این محصول تستی به شماره عنوان {i} می باشد",
-                        Image = Properties.Resources.TestImage.ToByte()
+                        Image = ((Bitmap)Properties.Resources.ResourceManager.GetObject("_" + i)).ToByte()
                     });
             }
         }
