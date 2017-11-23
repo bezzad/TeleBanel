@@ -264,4 +264,7 @@
   <data name="Bot_Connected" xml:space="preserve">
     <value>{0} Connected.</value>
   </data>
+  <data name="PleaseRegisterBeforeEnterAnyCommands" xml:space="preserve">
+    <value>Please register before enter any commands</value>
+  </data>
 </root>

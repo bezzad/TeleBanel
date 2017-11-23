@@ -14,7 +14,7 @@ namespace TeleBanel.Helper
         {
             if (msg == null) return null;
 
-            msg = msg.ToLower().Replace("/", "");
+            msg = msg.Replace("/", "");
             var skipFirstLen = 0;
             foreach (var c in msg)
             {

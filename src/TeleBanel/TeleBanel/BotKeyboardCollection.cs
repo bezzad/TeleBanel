@@ -15,7 +15,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit} {Localization.ResourceManager.GetString(propName)}", $"{InlinePrefixKeys.AboutKey}Edit{propName}")
+                    new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit} {Localization.ResourceManager.GetString(propName)}", $"{PrefixKeys.AboutKey}Edit{propName}")
                 }
             };
 
@@ -34,8 +34,8 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{InlinePrefixKeys.PortfolioKey}{Localization.Delete}_{productId}"),
-                    new InlineKeyboardCallbackButton(Emoji.Crayon, $"{InlinePrefixKeys.PortfolioKey}{Localization.Edit}_{productId}")
+                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{PrefixKeys.PortfolioKey}{Localization.Delete}_{productId}"),
+                    new InlineKeyboardCallbackButton(Emoji.Crayon, $"{PrefixKeys.PortfolioKey}{Localization.Edit}_{productId}")
                 }
             });
         }
@@ -45,11 +45,11 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.LastTrackButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.First}"),
-                    new InlineKeyboardCallbackButton(Emoji.ReverseButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
-                    new InlineKeyboardCallbackButton(currentProductIndex.ToString(), $"{InlinePrefixKeys.PortfolioKey}"),
-                    new InlineKeyboardCallbackButton(Emoji.PlayButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}"),
-                    new InlineKeyboardCallbackButton(Emoji.NextTrackButton, $"{InlinePrefixKeys.PortfolioKey}{Localization.Last}")
+                    new InlineKeyboardCallbackButton(Emoji.LastTrackButton, $"{PrefixKeys.PortfolioKey}{Localization.First}"),
+                    new InlineKeyboardCallbackButton(Emoji.ReverseButton, $"{PrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
+                    new InlineKeyboardCallbackButton(currentProductIndex.ToString(), $"{PrefixKeys.PortfolioKey}"),
+                    new InlineKeyboardCallbackButton(Emoji.PlayButton, $"{PrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}"),
+                    new InlineKeyboardCallbackButton(Emoji.NextTrackButton, $"{PrefixKeys.PortfolioKey}{Localization.Last}")
                 }
             });
         }
@@ -87,27 +87,27 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap7, $"{InlinePrefixKeys.PasswordKey}Num.7"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap8, $"{InlinePrefixKeys.PasswordKey}Num.8"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap9, $"{InlinePrefixKeys.PasswordKey}Num.9")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap7, $"{PrefixKeys.PasswordKey}Num.7"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap8, $"{PrefixKeys.PasswordKey}Num.8"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap9, $"{PrefixKeys.PasswordKey}Num.9")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap4, $"{InlinePrefixKeys.PasswordKey}Num.4"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap5, $"{InlinePrefixKeys.PasswordKey}Num.5"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap6, $"{InlinePrefixKeys.PasswordKey}Num.6")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap4, $"{PrefixKeys.PasswordKey}Num.4"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap5, $"{PrefixKeys.PasswordKey}Num.5"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap6, $"{PrefixKeys.PasswordKey}Num.6")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Keycap1, $"{InlinePrefixKeys.PasswordKey}Num.1"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap2, $"{InlinePrefixKeys.PasswordKey}Num.2"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap3, $"{InlinePrefixKeys.PasswordKey}Num.3")
+                    new InlineKeyboardCallbackButton(Emoji.Keycap1, $"{PrefixKeys.PasswordKey}Num.1"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap2, $"{PrefixKeys.PasswordKey}Num.2"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap3, $"{PrefixKeys.PasswordKey}Num.3")
                 },
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.LeftArrow, $"{InlinePrefixKeys.PasswordKey}Backspace"),
-                    new InlineKeyboardCallbackButton(Emoji.Keycap0, $"{InlinePrefixKeys.PasswordKey}Num.0"),
-                    new InlineKeyboardCallbackButton(Emoji.OKButton, $"{InlinePrefixKeys.PasswordKey}Enter")
+                    new InlineKeyboardCallbackButton(Emoji.LeftArrow, $"{PrefixKeys.PasswordKey}Backspace"),
+                    new InlineKeyboardCallbackButton(Emoji.Keycap0, $"{PrefixKeys.PasswordKey}Num.0"),
+                    new InlineKeyboardCallbackButton(Emoji.OKButton, $"{PrefixKeys.PasswordKey}Enter")
                 }
             };
 
@@ -119,8 +119,8 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.NEWButton + " " + Localization.AddProduct, $"{InlinePrefixKeys.PortfolioKey}{Localization.AddProduct}"),
-                    new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ShowProducts, $"{InlinePrefixKeys.PortfolioKey}{Localization.ShowProducts}")
+                    new InlineKeyboardCallbackButton(Emoji.NEWButton + " " + Localization.AddProduct, $"{PrefixKeys.PortfolioKey}{Localization.AddProduct}"),
+                    new InlineKeyboardCallbackButton(Emoji.Eye + " " + Localization.ShowProducts, $"{PrefixKeys.PortfolioKey}{Localization.ShowProducts}")
 
                 },
                 new InlineKeyboardButton[]
@@ -138,81 +138,81 @@ namespace TeleBanel
                 string.IsNullOrEmpty(website.Url)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Website}", $"{InlinePrefixKeys.LinksKey}EditWebsite")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Website}", $"{PrefixKeys.LinksKey}EditWebsite")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditWebsite"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditWebsite"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Website, website.Url)
                     },
                 string.IsNullOrEmpty(website.TelegramUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Telegram}", $"{InlinePrefixKeys.LinksKey}EditTelegram")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Telegram}", $"{PrefixKeys.LinksKey}EditTelegram")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditTelegram"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditTelegram"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Telegram, website.TelegramUrl)
                     },
                 string.IsNullOrEmpty(website.InstagramUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Instagram}", $"{InlinePrefixKeys.LinksKey}EditInstagram")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Instagram}", $"{PrefixKeys.LinksKey}EditInstagram")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditInstagram"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditInstagram"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Instagram, website.InstagramUrl)
                     },
                 string.IsNullOrEmpty(website.FacebookUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Facebook}", $"{InlinePrefixKeys.LinksKey}EditFacebook")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Facebook}", $"{PrefixKeys.LinksKey}EditFacebook")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditFacebook"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditFacebook"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Facebook, website.FacebookUrl)
                     },
                 string.IsNullOrEmpty(website.GooglePlusUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.GooglePlus}", $"{InlinePrefixKeys.LinksKey}EditGooglePlus")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.GooglePlus}", $"{PrefixKeys.LinksKey}EditGooglePlus")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditGooglePlus"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditGooglePlus"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.GooglePlus, website.GooglePlusUrl)
                     },
                 string.IsNullOrEmpty(website.TwitterUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Twitter}", $"{InlinePrefixKeys.LinksKey}EditTwitter")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Twitter}", $"{PrefixKeys.LinksKey}EditTwitter")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditTwitter"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditTwitter"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Twitter, website.TwitterUrl)
                     },
                 string.IsNullOrEmpty(website.LinkedInUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.LinkedIn}", $"{InlinePrefixKeys.LinksKey}EditLinkedIn")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.LinkedIn}", $"{PrefixKeys.LinksKey}EditLinkedIn")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditLinkedIn"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditLinkedIn"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.LinkedIn, website.LinkedInUrl)
                     },
                 string.IsNullOrEmpty(website.FlickerUrl)
                     ? new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Flicker}", $"{InlinePrefixKeys.LinksKey}EditFlicker")
+                        new InlineKeyboardCallbackButton($"{Emoji.HeavyPlusSign} {Localization.Add} {Localization.Flicker}", $"{PrefixKeys.LinksKey}EditFlicker")
                     }
                     : new InlineKeyboardButton[]
                     {
-                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{InlinePrefixKeys.LinksKey}EditFlicker"),
+                        new InlineKeyboardCallbackButton($"{Emoji.Crayon} {Localization.Edit}", $"{PrefixKeys.LinksKey}EditFlicker"),
                         new InlineKeyboardUrlButton(Emoji.Link + " " + Localization.Flicker, website.FlickerUrl)
                     }
             };
@@ -226,7 +226,7 @@ namespace TeleBanel
                 new InlineKeyboardButton[]
                 {
                     new InlineKeyboardCallbackButton(Emoji.JapaneseSymbolForBeginner + " " + Localization.ChangeLogo,
-                        $"{InlinePrefixKeys.LogoKey}Update"),
+                        $"{PrefixKeys.LogoKey}Update"),
                 }
             };
 
@@ -238,7 +238,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.CrossMarkButton + " " + Localization.Cancel, "Cancel"),
+                    new InlineKeyboardCallbackButton(Emoji.CrossMarkButton + " " + Localization.Cancel, PrefixKeys.CancelKey)
                 }
             };
 
@@ -250,7 +250,7 @@ namespace TeleBanel
             {
                 new InlineKeyboardButton[]
                 {
-                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{InlinePrefixKeys.InboxKey}Delete_{id}"),
+                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{PrefixKeys.InboxKey}Delete_{id}"),
                     new InlineKeyboardUrlButton(replyName, replyLink)
                 }
             };

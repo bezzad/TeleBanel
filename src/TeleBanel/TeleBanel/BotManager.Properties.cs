@@ -19,5 +19,19 @@ namespace TeleBanel
         public IWebsiteMiddleware WebsiteManager { set; get; }
         public IProductMiddleware ProductManager { set; get; }
         public IInboxMiddleware InboxManager { set; get; }
+
+
+        #region Constructors
+
+        public BotManager(string apiKey, string botPassword, IWebsiteMiddleware websiteInfo)
+        {
+            Accounts = new Dictionary<int, UserWrapper>();
+            BotApiKey = apiKey;
+            BotApiPassword = botPassword;
+            KeyboardCollection = new BotKeyboardCollection();
+            WebsiteManager = websiteInfo;
+        }
+
+        #endregion
     }
 }

@@ -12,12 +12,18 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TeleBanel
 {
-    // Bot Manager Missions
+    // BotManager.InlineKeysMission
     public partial class BotManager
     {
-        public async Task GoNextPortfolioStep(UserWrapper user)
+        protected async Task OnInlineKeyCancel(UserWrapper user)
         {
-            var query = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.PortfolioKey, "");
+            user.WaitingMessageQuery = null;
+            await DeleteMessageAsync(user.LastCallBackQuery.Message);
+        }
+
+        protected async Task OnInlineKeyPortfolio(UserWrapper user)
+        {
+            var query = user.LastCallBackQuery.Data.Replace(PrefixKeys.PortfolioKey, "");
 
             if (query == Localization.AddProduct)
             {
@@ -82,15 +88,15 @@ namespace TeleBanel
             await AnswerCallbackQueryAsync(user);
         }
 
-        public async Task GoNextAboutStep(UserWrapper user)
+        protected async Task OnInlineKeyAbout(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
 
-            var propName = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.AboutKey + "Edit", "");
-            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextAboutStep))
+            var propName = user.LastCallBackQuery.Data.Replace(PrefixKeys.AboutKey + "Edit", "");
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(OnInlineKeyAbout))
             {
-                user.WaitingMessageQuery = nameof(GoNextAboutStep);
+                user.WaitingMessageQuery = nameof(OnInlineKeyAbout);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard());
 
@@ -108,14 +114,14 @@ namespace TeleBanel
             }
         }
 
-        public async Task GoNextLogoStep(UserWrapper user)
+        protected async Task OnInlineKeyLogo(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
 
-            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextLogoStep))
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(OnInlineKeyLogo))
             {
-                user.WaitingMessageQuery = nameof(GoNextLogoStep);
+                user.WaitingMessageQuery = nameof(OnInlineKeyLogo);
                 await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard());
 
@@ -138,15 +144,15 @@ namespace TeleBanel
             }
         }
 
-        public async Task GoNextLinksStep(UserWrapper user)
+        protected async Task OnInlineKeyLinks(UserWrapper user)
         {
             if (user.LastCallBackQuery == null)
                 return;
 
-            var linkName = user.LastCallBackQuery.Data.Replace(InlinePrefixKeys.LinksKey + "Edit", "");
-            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(GoNextLinksStep))
+            var linkName = user.LastCallBackQuery.Data.Replace(PrefixKeys.LinksKey + "Edit", "");
+            if (user.WaitingMessageQuery == null || user.WaitingMessageQuery != nameof(OnInlineKeyLinks))
             {
-                user.WaitingMessageQuery = nameof(GoNextLinksStep);
+                user.WaitingMessageQuery = nameof(OnInlineKeyLinks);
 
                 user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard());
@@ -182,12 +188,12 @@ namespace TeleBanel
             }
         }
 
-        public async Task GoNextInboxStep(UserWrapper user)
+        protected async Task OnInlineKeyInbox(UserWrapper user)
         {
             if (user?.LastCallBackQuery == null)
                 return;
 
-            var msgId = user.LastCallBackQuery?.Data?.Replace(InlinePrefixKeys.InboxKey + "Delete_", "");
+            var msgId = user.LastCallBackQuery?.Data?.Replace(PrefixKeys.InboxKey + "Delete_", "");
 
             if (int.TryParse(msgId, out int id))
             {
@@ -197,7 +203,7 @@ namespace TeleBanel
             }
         }
 
-        public async Task<bool> GoNextPasswordStep(CallbackQueryEventArgs e)
+        protected async Task<bool> OnInlineKeyPassword(CallbackQueryEventArgs e)
         {
             var userId = e.CallbackQuery.From.Id;
 

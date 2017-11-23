@@ -376,6 +376,15 @@ namespace TeleBanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please register before enter any commands.
+        /// </summary>
+        internal static string PleaseRegisterBeforeEnterAnyCommands {
+            get {
+                return ResourceManager.GetString("PleaseRegisterBeforeEnterAnyCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please wait . . . .
         /// </summary>
         internal static string PleaseWait {

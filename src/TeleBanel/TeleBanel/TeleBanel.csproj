@@ -102,9 +102,10 @@
     <Compile Include="BotKeyboardCollection.cs" />
     <Compile Include="BotManager.cs" />
     <Compile Include="BotManager.Helpers.cs" />
-    <Compile Include="BotManager.Missions.cs" />
+    <Compile Include="BotManager.MessageMission.cs" />
+    <Compile Include="BotManager.InlineKeysMission.cs" />
     <Compile Include="Helper\Emoji.cs" />
-    <Compile Include="Helper\InlinePrefixKeys.cs" />
+    <Compile Include="Helper\PrefixKeys.cs" />
     <Compile Include="Properties\Localization.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
