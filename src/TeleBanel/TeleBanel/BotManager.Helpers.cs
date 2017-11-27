@@ -52,12 +52,12 @@ namespace TeleBanel
         public async Task SendImageAsync(UserWrapper user,
             string caption, string description, byte[] imageBytes, IReplyMarkup replyMarkup)
         {
-            var msg = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id, Localization.PleaseWait);
+            var msg = await Bot.SendTextMessageAsync(user.Id, Localization.PleaseWait);
             await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
 
             using (var stream = new MemoryStream(imageBytes))
             {
-                user.LastMessageQuery = await Bot.SendPhotoAsync(user.LastCallBackQuery.Message.Chat.Id, new FileToSend(caption, stream), description, replyMarkup: replyMarkup);
+                user.LastMessageQuery = await Bot.SendPhotoAsync(user.Id, new FileToSend(caption, stream), description, replyMarkup: replyMarkup);
             }
 
             await DeleteMessageAsync(msg);

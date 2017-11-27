@@ -5,6 +5,7 @@
         public static string CallbackQueryMethod => "OnInlineKey";
         public static string MessageMethod => "OnMessage";
 
+        public static string ProductsTrackBarKey => "protrack_";
         public static string PortfolioKey => "portfolio_";
         public static string InboxKey => "inbox_";
         public static string LinksKey => "links_";

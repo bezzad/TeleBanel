@@ -1,4 +1,8 @@
-﻿using TeleBanel.Helper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TeleBanel.Helper;
+using TeleBanel.Models;
 using TeleBanel.Models.Middlewares;
 using TeleBanel.Properties;
 using Telegram.Bot.Types;
@@ -27,32 +31,7 @@ namespace TeleBanel
         public IReplyMarkup ContactPhoneInlineKeyboard => new InlineKeyboardMarkup(GetAboutInlineKeyboard(nameof(IWebsiteMiddleware.ContactPhone)));
         public IReplyMarkup FeedbackEmailInlineKeyboard => new InlineKeyboardMarkup(GetAboutInlineKeyboard(nameof(IWebsiteMiddleware.FeedbackEmail)));
         public IReplyMarkup TitleInlineKeyboard => new InlineKeyboardMarkup(GetAboutInlineKeyboard(nameof(IWebsiteMiddleware.Title)));
-
-        public IReplyMarkup ProductInlineKeyboard(int productId)
-        {
-            return new InlineKeyboardMarkup(new[]
-            {
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardCallbackButton(Emoji.Wastebasket, $"{PrefixKeys.PortfolioKey}{Localization.Delete}_{productId}"),
-                    new InlineKeyboardCallbackButton(Emoji.Crayon, $"{PrefixKeys.PortfolioKey}{Localization.Edit}_{productId}")
-                }
-            });
-        }
-        public IReplyMarkup ProductTrackBarInlineKeyboard(int currentProductIndex, int productsCount)
-        {
-            return new InlineKeyboardMarkup(new[]
-            {
-                new InlineKeyboardButton[]
-                {
-                    new InlineKeyboardCallbackButton(Emoji.LastTrackButton, $"{PrefixKeys.PortfolioKey}{Localization.First}"),
-                    new InlineKeyboardCallbackButton(Emoji.ReverseButton, $"{PrefixKeys.PortfolioKey}{Localization.Previous}_{currentProductIndex}"),
-                    new InlineKeyboardCallbackButton(currentProductIndex.ToString(), $"{PrefixKeys.PortfolioKey}"),
-                    new InlineKeyboardCallbackButton(Emoji.PlayButton, $"{PrefixKeys.PortfolioKey}{Localization.Next}_{currentProductIndex}"),
-                    new InlineKeyboardCallbackButton(Emoji.NextTrackButton, $"{PrefixKeys.PortfolioKey}{Localization.Last}")
-                }
-            });
-        }
+        
         public IReplyMarkup CommonReplyKeyboard()
         {
             var commonKeyboard = new[]
@@ -257,5 +236,44 @@ namespace TeleBanel
 
             return new InlineKeyboardMarkup(inlineKeys);
         }
+        public IReplyMarkup ProductInlineKeyboard(int productId, int start, int totalCount)
+        {
+            var count = 1; // count of products in every page
+            start = start > totalCount
+                ? totalCount - count
+                : start < 0 ? 0 : start;
+
+            var pageCount = (int)Math.Ceiling((double)totalCount / count);
+            var currentPage = (start / count) + 1;
+            var prePage = currentPage - 1 < 1 ? currentPage : currentPage - 1;
+            var nextPage = currentPage + 1 > pageCount ? currentPage : currentPage + 1;
+
+            var prefix = PrefixKeys.ProductsTrackBarKey + $"{start}_go";
+
+            var lines = new List<InlineKeyboardButton[]>()
+            {
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton(Emoji.Wastebasket,
+                        $"{PrefixKeys.PortfolioKey}{Localization.Delete}_{productId}"),
+                    new InlineKeyboardCallbackButton(Emoji.Crayon,
+                        $"{PrefixKeys.PortfolioKey}{Localization.Edit}_{productId}")
+                },
+                new InlineKeyboardButton[]
+                {
+                    new InlineKeyboardCallbackButton("« 1", prefix + "0"),
+                    new InlineKeyboardCallbackButton("‹", prefix + (prePage - 1) * count),
+                    new InlineKeyboardCallbackButton($"• {currentPage} •", prefix + start),
+                    new InlineKeyboardCallbackButton("›", prefix + (nextPage - 1) * count),
+                    new InlineKeyboardCallbackButton($"{pageCount} »", prefix + (pageCount - 1) * count)
+                }
+            };
+
+            var inlineKeys = new InlineKeyboardMarkup(lines.ToArray());
+
+            return inlineKeys;
+        }
+
+
     }
 }

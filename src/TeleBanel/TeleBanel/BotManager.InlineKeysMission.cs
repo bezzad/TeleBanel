@@ -34,12 +34,8 @@ namespace TeleBanel
 
                 var pids = ProductManager.GetProductsId();
                 var product = ProductManager.GetProduct(pids.Length / 2);
-                var count = ProductManager.GetProductsId().Length;
-                await SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
-
-                user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
-                    Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
-                    replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(pids.Length / 2, count));
+                await SendImageAsync(user, product.Title, product.Descriptin, product.Image, 
+                    KeyboardCollection.ProductInlineKeyboard(product.Id, pids.Length / 2, ProductManager.GetProductsId().Length));
             }
             else if (query == Localization.EditProduct)
             {
@@ -49,40 +45,27 @@ namespace TeleBanel
             {
 
             }
-            else if (query.StartsWith(Localization.Previous))
+
+            await AnswerCallbackQueryAsync(user);
+        }
+
+        protected async Task OnInlineKeyProTrack(UserWrapper user)
+        {
+            var query = user.LastCallBackQuery.Data.Replace(PrefixKeys.ProductsTrackBarKey, "");
+            var startNumLen = query.IndexOf("_", StringComparison.Ordinal);
+
+            if (startNumLen > 0 &&
+                int.TryParse(query.Substring(0, startNumLen), out int start) &&
+                int.TryParse(query.Substring(startNumLen + 3), out int newStart))
             {
-                if (int.TryParse(query.Replace(Localization.Previous, "").Replace("_", ""),
-                    out int currentProductIndex) && currentProductIndex > 0)
-                {
                     await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
 
                     var pids = ProductManager.GetProductsId();
-                    var product = ProductManager.GetProduct(pids[currentProductIndex - 1]);
+                    var product = ProductManager.GetProduct(pids[newStart]);
+
                     await DeleteMessageAsync(user.LastCallBackQuery.Message);
-                    await SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
-                    user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
-                        Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
-                        replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex - 1, pids.Length));
-                }
-            }
-            else if (query.StartsWith(Localization.Next))
-            {
-                if (int.TryParse(query.Replace(Localization.Next, "").Replace("_", ""),
-                        out int currentProductIndex) && currentProductIndex > 0)
-                {
-                    await Bot.SendChatActionAsync(user.LastCallBackQuery.Message.Chat.Id, ChatAction.UploadPhoto);
-
-                    var pids = ProductManager.GetProductsId();
-                    if (pids.Length > currentProductIndex + 1)
-                    {
-                        var product = ProductManager.GetProduct(pids[currentProductIndex + 1]);
-                        await DeleteMessageAsync(user.LastCallBackQuery.Message);
-                        await SendImageAsync(user, product.Title, product.Descriptin, product.Image, KeyboardCollection.ProductInlineKeyboard(product.Id));
-                        user.LastMessageQuery = await Bot.SendTextMessageAsync(user.LastCallBackQuery.Message.Chat.Id,
-                            Localization.GotoNextOrPreviousProducts, ParseMode.Markdown,
-                            replyMarkup: KeyboardCollection.ProductTrackBarInlineKeyboard(currentProductIndex + 1, pids.Length));
-                    }
-                }
+                    await SendImageAsync(user, product.Title, product.Descriptin, product.Image,
+                        KeyboardCollection.ProductInlineKeyboard(product.Id, newStart, pids.Length));
             }
 
             await AnswerCallbackQueryAsync(user);
@@ -156,7 +139,7 @@ namespace TeleBanel
 
                 user.LastCallBackQuery.Message = await Bot.EditMessageReplyMarkupAsync(user.LastCallBackQuery.Message.Chat.Id,
                     user.LastCallBackQuery.Message.MessageId, KeyboardCollection.CancelInlineKeyboard());
-                
+
                 await AnswerCallbackQueryAsync(user, $"Please enter new {linkName} link and press Enter key.", cacheTime: 6000);
             }
             else
